@@ -1,0 +1,48 @@
+[application]
+    name = "bus-api"
+    api_uri = "/api/v1"
+    mode = "debug"     # debug/release
+
+[log]    
+    level = "debug" 
+    encoding = "json"
+    output = "../log/bus-api.log"
+    
+[web]
+    host = "0.0.0.0"
+    port = 9090
+
+[rdb]
+    host = "192.168.13.71"
+    port = 3306
+    user = "test"
+    password = "test"
+    dbname = "wms"
+[wdb]
+    host = "192.168.13.71"
+    port = 3306
+    user = "test"
+    password = "test"
+    dbname = "wms"
+    
+[file]
+    path = "upload/"
+
+[queue]
+    host = "192.168.13.71"
+    port = 5672
+    user = "test"
+    password = "test"
+    exchange = "wms-new"
+
+[cache]
+    host = "192.168.13.71:6379"
+    port = 6379
+    password = ""
+
+[Wechat]
+    signin_uri = "https://api.weixin.qq.com/sns/jscode2session"
+    token_uri = "https://api.weixin.qq.com/cgi-bin/token"
+    qrcode_uri = "https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode"
+    app_id = "a"
+    app_secret = "b"
