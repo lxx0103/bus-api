@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"bus-api/api/v1/auth"
-	"bus-api/api/v1/setting"
+	"bus-api/api/v1/user"
 	"bus-api/core/cache"
 	"bus-api/core/config"
 	"bus-api/core/database"
@@ -17,6 +17,6 @@ func Run(args []string) {
 	database.ConfigMysql()
 	r := router.InitRouter()
 	router.InitPublicRouter(r, auth.Routers)
-	router.InitAuthRouter(r, auth.AuthRouter, setting.AuthRouter)
+	router.InitAuthRouter(r, auth.AuthRouter, user.AuthRouter) //, setting.AuthRouter)
 	router.RunServer(r)
 }

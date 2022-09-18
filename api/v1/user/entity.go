@@ -1,11 +1,11 @@
-package setting
+package user
 
 import "time"
 
-type Unit struct {
+type WxUser struct {
 	ID             int64     `db:"id" json:"id"`
-	UnitType       string    `db:"unit_type" json:"unit_type"`
-	UnitID         string    `db:"unit_id" json:"unit_id"`
+	WxUserType     string    `db:"wxUser_type" json:"wxUser_type"`
+	WxUserID       string    `db:"wxUser_id" json:"wxUser_id"`
 	OrganizationID string    `db:"organization_id" json:"organization_id"`
 	Name           string    `db:"name" json:"name"`
 	Status         int       `db:"status" json:"status"`

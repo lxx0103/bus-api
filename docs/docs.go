@@ -26,7 +26,7 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/adjustmentreasons": {
+        "/adminusers": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -35,1759 +35,9 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "库存调整原因管理"
+                    "用户管理"
                 ],
-                "summary": "库存调整原因列表",
-                "operationId": "336",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "页码",
-                        "name": "page_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数（5/10/15/20）",
-                        "name": "page_size",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "库存调整原因名称",
-                        "name": "name",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ListRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/setting.AdjustmentReasonResponse"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "库存调整原因管理"
-                ],
-                "summary": "新建库存调整原因",
-                "operationId": "337",
-                "parameters": [
-                    {
-                        "description": "库存调整原因信息",
-                        "name": "adjustmentreason_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.AdjustmentReasonNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.AdjustmentReasonResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/adjustmentreasons/:id": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "库存调整原因管理"
-                ],
-                "summary": "根据ID获取库存调整原因",
-                "operationId": "339",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "库存调整原因ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.AdjustmentReasonResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "库存调整原因管理"
-                ],
-                "summary": "根据ID更新库存调整原因",
-                "operationId": "338",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "库存调整原因ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "库存调整原因信息",
-                        "name": "adjustmentreason_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.AdjustmentReasonNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.AdjustmentReason"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "库存调整原因管理"
-                ],
-                "summary": "根据ID删除库存调整原因",
-                "operationId": "340",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "库存调整原因ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/brands": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "品牌管理"
-                ],
-                "summary": "品牌列表",
-                "operationId": "311",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "页码",
-                        "name": "page_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数（5/10/15/20）",
-                        "name": "page_size",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "品牌名称",
-                        "name": "name",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ListRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/setting.BrandResponse"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "品牌管理"
-                ],
-                "summary": "新建品牌",
-                "operationId": "312",
-                "parameters": [
-                    {
-                        "description": "品牌信息",
-                        "name": "brand_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.BrandNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.BrandResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/brands/:id": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "品牌管理"
-                ],
-                "summary": "根据ID获取品牌",
-                "operationId": "314",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "品牌ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.BrandResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "品牌管理"
-                ],
-                "summary": "根据ID更新品牌",
-                "operationId": "313",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "品牌ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "品牌信息",
-                        "name": "brand_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.BrandNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.Brand"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "品牌管理"
-                ],
-                "summary": "根据ID删除品牌",
-                "operationId": "315",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "品牌ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/carriers": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "物流商管理"
-                ],
-                "summary": "物流商列表",
-                "operationId": "331",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "页码",
-                        "name": "page_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数（5/10/15/20）",
-                        "name": "page_size",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "物流商名称",
-                        "name": "name",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ListRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/setting.CarrierResponse"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "物流商管理"
-                ],
-                "summary": "新建物流商",
-                "operationId": "332",
-                "parameters": [
-                    {
-                        "description": "物流商信息",
-                        "name": "carrier_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.CarrierNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.CarrierResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/carriers/:id": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "物流商管理"
-                ],
-                "summary": "根据ID获取物流商",
-                "operationId": "334",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "物流商ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.CarrierResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "物流商管理"
-                ],
-                "summary": "根据ID更新物流商",
-                "operationId": "333",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "物流商ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "物流商信息",
-                        "name": "carrier_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.CarrierNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.Carrier"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "物流商管理"
-                ],
-                "summary": "根据ID删除物流商",
-                "operationId": "335",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "物流商ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/customers": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "客户管理"
-                ],
-                "summary": "客户列表",
-                "operationId": "326",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "页码",
-                        "name": "page_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数（5/10/15/20）",
-                        "name": "page_size",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "客户名称",
-                        "name": "name",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ListRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/setting.CustomerResponse"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "客户管理"
-                ],
-                "summary": "新建客户",
-                "operationId": "327",
-                "parameters": [
-                    {
-                        "description": "客户信息",
-                        "name": "customer_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.CustomerNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.CustomerResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/customers/:id": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "客户管理"
-                ],
-                "summary": "根据ID获取客户",
-                "operationId": "329",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "客户ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.CustomerResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "客户管理"
-                ],
-                "summary": "根据ID更新客户",
-                "operationId": "328",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "客户ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "客户信息",
-                        "name": "customer_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.CustomerNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.Customer"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "客户管理"
-                ],
-                "summary": "根据ID删除客户",
-                "operationId": "330",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "客户ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/historys": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "历史记录管理"
-                ],
-                "summary": "历史记录列表",
-                "operationId": "701",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "页码",
-                        "name": "page_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数（5/10/15/20）",
-                        "name": "page_size",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "相关ID",
-                        "name": "reference_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "历史类型",
-                        "name": "history_type",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ListRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/common.HistoryResponse"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/manufacturers": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "生产商管理"
-                ],
-                "summary": "生产商列表",
-                "operationId": "306",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "页码",
-                        "name": "page_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数（5/10/15/20）",
-                        "name": "page_size",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "生产商名称",
-                        "name": "name",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ListRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/setting.ManufacturerResponse"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "生产商管理"
-                ],
-                "summary": "新建生产商",
-                "operationId": "307",
-                "parameters": [
-                    {
-                        "description": "生产商信息",
-                        "name": "manufacturer_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.ManufacturerNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.ManufacturerResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/manufacturers/:id": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "生产商管理"
-                ],
-                "summary": "根据ID获取生产商",
-                "operationId": "309",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "生产商ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.ManufacturerResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "生产商管理"
-                ],
-                "summary": "根据ID更新生产商",
-                "operationId": "308",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "生产商ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "生产商信息",
-                        "name": "manufacturer_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.ManufacturerNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.Manufacturer"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "生产商管理"
-                ],
-                "summary": "根据ID删除生产商",
-                "operationId": "310",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "生产商ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/nextnumber": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "通用"
-                ],
-                "summary": "获取下一个编码",
-                "operationId": "702",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "编码类型",
-                        "name": "number_type",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/paymentmethods": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "付款方式管理"
-                ],
-                "summary": "付款方式列表",
-                "operationId": "345",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "页码",
-                        "name": "page_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数（5/10/15/20）",
-                        "name": "page_size",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "付款方式名称",
-                        "name": "name",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ListRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/setting.PaymentMethodResponse"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "付款方式管理"
-                ],
-                "summary": "新建付款方式",
-                "operationId": "341",
-                "parameters": [
-                    {
-                        "description": "付款方式信息",
-                        "name": "paymentmethod_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.PaymentMethodNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.PaymentMethodResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/paymentmethods/:id": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "付款方式管理"
-                ],
-                "summary": "根据ID获取付款方式",
-                "operationId": "343",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "付款方式ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.PaymentMethodResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "付款方式管理"
-                ],
-                "summary": "根据ID更新付款方式",
-                "operationId": "342",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "付款方式ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "付款方式信息",
-                        "name": "paymentmethod_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.PaymentMethodNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.PaymentMethod"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "付款方式管理"
-                ],
-                "summary": "根据ID删除付款方式",
-                "operationId": "344",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "付款方式ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/roles": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "角色管理"
-                ],
-                "summary": "角色列表",
+                "summary": "后台用户列表",
                 "operationId": "003",
                 "parameters": [
                     {
@@ -1806,8 +56,8 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "角色名称",
-                        "name": "name",
+                        "description": "用户名称",
+                        "name": "username",
                         "in": "query"
                     }
                 ],
@@ -1825,58 +75,8 @@ var doc = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/auth.RoleResponse"
+                                                "$ref": "#/definitions/auth.AdminUserResponse"
                                             }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "角色管理"
-                ],
-                "summary": "新建角色",
-                "operationId": "004",
-                "parameters": [
-                    {
-                        "description": "角色信息",
-                        "name": "role_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/auth.RoleNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/auth.RoleResponse"
                                         }
                                     }
                                 }
@@ -1892,7 +92,7 @@ var doc = `{
                 }
             }
         },
-        "/roles/:id": {
+        "/adminusers/:id": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -1901,14 +101,14 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色管理"
+                    "用户管理"
                 ],
-                "summary": "根据ID获取角色",
-                "operationId": "006",
+                "summary": "根据ID获取后台用户",
+                "operationId": "004",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "角色ID",
+                        "description": "用户ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1926,7 +126,7 @@ var doc = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/auth.RoleResponse"
+                                            "$ref": "#/definitions/auth.AdminUserResponse"
                                         }
                                     }
                                 }
@@ -1940,7 +140,9 @@ var doc = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/adminusers/:id/passwords": {
             "put": {
                 "consumes": [
                     "application/json"
@@ -1949,74 +151,19 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色管理"
+                    "用户管理"
                 ],
-                "summary": "根据ID更新角色",
+                "summary": "更新密码",
                 "operationId": "005",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "角色ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "角色信息",
-                        "name": "role_info",
+                        "description": "用户信息",
+                        "name": "info",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/auth.RoleNew"
+                            "$ref": "#/definitions/auth.AdminPasswordUpdate"
                         }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/auth.Role"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "角色管理"
-                ],
-                "summary": "根据ID删除角色",
-                "operationId": "007",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "角色ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -2056,10 +203,10 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户权限"
+                    "用户管理"
                 ],
                 "summary": "登录",
-                "operationId": "002",
+                "operationId": "001",
                 "parameters": [
                     {
                         "description": "登录类型",
@@ -2105,71 +252,7 @@ var doc = `{
                 }
             }
         },
-        "/taxes": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "税率管理"
-                ],
-                "summary": "税率列表",
-                "operationId": "321",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "页码",
-                        "name": "page_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数（5/10/15/20）",
-                        "name": "page_size",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "税率名称",
-                        "name": "name",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ListRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/setting.TaxResponse"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
+        "/users": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -2178,174 +261,19 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "税率管理"
+                    "用户管理"
                 ],
-                "summary": "新建税率",
-                "operationId": "322",
+                "summary": "创建后台用户",
+                "operationId": "002",
                 "parameters": [
                     {
-                        "description": "税率信息",
-                        "name": "tax_info",
+                        "description": "登录类型",
+                        "name": "signup_info",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/setting.TaxNew"
+                            "$ref": "#/definitions/auth.SignupRequest"
                         }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.TaxResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/taxes/:id": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "税率管理"
-                ],
-                "summary": "根据ID获取税率",
-                "operationId": "324",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "税率ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.TaxResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "税率管理"
-                ],
-                "summary": "根据ID更新税率",
-                "operationId": "323",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "税率ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "税率信息",
-                        "name": "tax_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.TaxNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.Tax"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "税率管理"
-                ],
-                "summary": "根据ID删除税率",
-                "operationId": "325",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "税率ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -2376,7 +304,65 @@ var doc = `{
                 }
             }
         },
-        "/units": {
+        "/wx/signin": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "小程序管理"
+                ],
+                "summary": "小程序登录",
+                "operationId": "006",
+                "parameters": [
+                    {
+                        "description": "登录类型",
+                        "name": "signin_info",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.SigninRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.SuccessRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/auth.WxSigninResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorRes"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/wxusers": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -2385,9 +371,9 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "单位管理"
+                    "小程序用户管理"
                 ],
-                "summary": "单位列表",
+                "summary": "小程序用户列表",
                 "operationId": "301",
                 "parameters": [
                     {
@@ -2406,14 +392,32 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "单位名称",
+                        "description": "姓名",
                         "name": "name",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "单位类型（weight/length/custom)",
-                        "name": "unit_type",
+                        "description": "班级",
+                        "name": "class",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "年级",
+                        "name": "grade",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "身份证号",
+                        "name": "identity",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "角色（学生，员工）",
+                        "name": "role",
                         "in": "query"
                     }
                 ],
@@ -2431,7 +435,7 @@ var doc = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/setting.UnitResponse"
+                                                "$ref": "#/definitions/auth.WxUserResponse"
                                             }
                                         }
                                     }
@@ -2455,18 +459,18 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "单位管理"
+                    "小程序用户管理"
                 ],
-                "summary": "新建单位",
+                "summary": "新建小程序用户",
                 "operationId": "302",
                 "parameters": [
                     {
-                        "description": "单位信息",
-                        "name": "unit_info",
+                        "description": "小程序用户信息",
+                        "name": "wxUser_info",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/setting.UnitNew"
+                            "$ref": "#/definitions/user.WxUserNew"
                         }
                     }
                 ],
@@ -2482,7 +486,7 @@ var doc = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/setting.UnitResponse"
+                                            "$ref": "#/definitions/user.WxUserResponse"
                                         }
                                     }
                                 }
@@ -2498,7 +502,7 @@ var doc = `{
                 }
             }
         },
-        "/units/:id": {
+        "/wxusers/:id": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -2507,14 +511,14 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "单位管理"
+                    "小程序用户管理"
                 ],
-                "summary": "根据ID获取单位",
+                "summary": "根据ID获取小程序用户",
                 "operationId": "304",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "单位ID",
+                        "description": "小程序用户ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -2532,7 +536,7 @@ var doc = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/setting.UnitResponse"
+                                            "$ref": "#/definitions/user.WxUserResponse"
                                         }
                                     }
                                 }
@@ -2555,25 +559,25 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "单位管理"
+                    "小程序用户管理"
                 ],
-                "summary": "根据ID更新单位",
+                "summary": "根据ID更新小程序用户",
                 "operationId": "303",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "单位ID",
+                        "description": "小程序用户ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "单位信息",
-                        "name": "unit_info",
+                        "description": "小程序用户信息",
+                        "name": "wxUser_info",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/setting.UnitNew"
+                            "$ref": "#/definitions/user.WxUserNew"
                         }
                     }
                 ],
@@ -2589,7 +593,7 @@ var doc = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/setting.Unit"
+                                            "$ref": "#/definitions/user.WxUser"
                                         }
                                     }
                                 }
@@ -2612,14 +616,14 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "单位管理"
+                    "小程序用户管理"
                 ],
-                "summary": "根据ID删除单位",
+                "summary": "根据ID删除小程序用户",
                 "operationId": "305",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "单位ID",
+                        "description": "小程序用户ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -2653,71 +657,7 @@ var doc = `{
                 }
             }
         },
-        "/vendors": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "供应商管理"
-                ],
-                "summary": "供应商列表",
-                "operationId": "316",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "页码",
-                        "name": "page_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "每页行数（5/10/15/20）",
-                        "name": "page_size",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "供应商名称",
-                        "name": "name",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.ListRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/setting.VendorResponse"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
+        "/wxusers/batch": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -2726,173 +666,16 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "供应商管理"
+                    "小程序用户管理"
                 ],
-                "summary": "新建供应商",
-                "operationId": "317",
+                "summary": "批量导入微信用户",
+                "operationId": "61",
                 "parameters": [
                     {
-                        "description": "供应商信息",
-                        "name": "vendor_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.VendorNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.VendorResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/vendors/:id": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "供应商管理"
-                ],
-                "summary": "根据ID获取供应商",
-                "operationId": "319",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "供应商ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.VendorResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "供应商管理"
-                ],
-                "summary": "根据ID更新供应商",
-                "operationId": "318",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "供应商ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "供应商信息",
-                        "name": "vendor_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/setting.VendorNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/setting.Vendor"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "供应商管理"
-                ],
-                "summary": "根据ID删除供应商",
-                "operationId": "320",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "供应商ID",
-                        "name": "id",
-                        "in": "path",
+                        "type": "file",
+                        "description": "上传文件",
+                        "name": "file",
+                        "in": "formData",
                         "required": true
                     }
                 ],
@@ -2926,120 +709,48 @@ var doc = `{
         }
     },
     "definitions": {
-        "auth.Role": {
+        "auth.AdminPasswordUpdate": {
+            "type": "object",
+            "required": [
+                "password"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                }
+            }
+        },
+        "auth.AdminUserResponse": {
             "type": "object",
             "properties": {
-                "created": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "integer"
                 },
-                "is_admin": {
-                    "type": "integer"
-                },
-                "is_default": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "priority": {
-                    "type": "integer"
-                },
-                "role_id": {
+                "role": {
                     "type": "string"
                 },
                 "status": {
                     "type": "integer"
                 },
-                "updated": {
+                "username": {
                     "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "auth.RoleNew": {
-            "type": "object",
-            "required": [
-                "is_admin",
-                "name",
-                "priority",
-                "status"
-            ],
-            "properties": {
-                "is_admin": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 1
-                },
-                "priority": {
-                    "type": "integer",
-                    "minimum": 1
-                },
-                "status": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                }
-            }
-        },
-        "auth.RoleResponse": {
-            "type": "object",
-            "properties": {
-                "is_admin": {
-                    "type": "integer"
-                },
-                "is_default": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "priority": {
-                    "type": "integer"
-                },
-                "role_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
                 }
             }
         },
         "auth.SigninRequest": {
             "type": "object",
             "required": [
-                "email",
-                "password"
+                "password",
+                "username"
             ],
             "properties": {
-                "email": {
-                    "type": "string"
-                },
                 "password": {
                     "type": "string",
                     "minLength": 6
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
@@ -3050,50 +761,66 @@ var doc = `{
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/auth.UserResponse"
+                    "$ref": "#/definitions/auth.AdminUserResponse"
                 }
             }
         },
-        "auth.UserResponse": {
+        "auth.SignupRequest": {
             "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
             "properties": {
-                "email": {
-                    "type": "string"
+                "password": {
+                    "type": "string",
+                    "minLength": 6
                 },
-                "role_name": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
-                },
-                "user_name": {
+                "username": {
                     "type": "string"
                 }
             }
         },
-        "common.HistoryResponse": {
+        "auth.WxSigninResponse": {
             "type": "object",
             "properties": {
-                "description": {
+                "token": {
                     "type": "string"
                 },
-                "history_by": {
+                "user": {
+                    "$ref": "#/definitions/auth.WxUserResponse"
+                }
+            }
+        },
+        "auth.WxUserResponse": {
+            "type": "object",
+            "properties": {
+                "class": {
                     "type": "string"
                 },
-                "history_id": {
+                "expire_date": {
                     "type": "string"
                 },
-                "history_time": {
+                "grade": {
                     "type": "string"
                 },
-                "history_type": {
+                "id": {
+                    "type": "integer"
+                },
+                "identity": {
                     "type": "string"
                 },
-                "organization_id": {
+                "name": {
                     "type": "string"
                 },
-                "reference_id": {
+                "open_id": {
                     "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
                 }
             }
         },
@@ -3129,12 +856,9 @@ var doc = `{
                 "data": {}
             }
         },
-        "setting.AdjustmentReason": {
+        "user.WxUser": {
             "type": "object",
             "properties": {
-                "adjustment_reason_id": {
-                    "type": "string"
-                },
                 "created": {
                     "type": "string"
                 },
@@ -3158,17 +882,51 @@ var doc = `{
                 },
                 "updated_by": {
                     "type": "string"
+                },
+                "wxUser_id": {
+                    "type": "string"
+                },
+                "wxUser_type": {
+                    "type": "string"
                 }
             }
         },
-        "setting.AdjustmentReasonNew": {
+        "user.WxUserNew": {
             "type": "object",
             "required": [
+                "expire_date",
+                "identity",
                 "name",
+                "role",
                 "status"
             ],
             "properties": {
+                "class": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 1
+                },
+                "expire_date": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 1
+                },
+                "grade": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 1
+                },
+                "identity": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 1
+                },
                 "name": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 1
+                },
+                "role": {
                     "type": "string",
                     "maxLength": 64,
                     "minLength": 1
@@ -3182,565 +940,7 @@ var doc = `{
                 }
             }
         },
-        "setting.AdjustmentReasonResponse": {
-            "type": "object",
-            "properties": {
-                "adjustment_reason_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                }
-            }
-        },
-        "setting.Brand": {
-            "type": "object",
-            "properties": {
-                "brand_id": {
-                    "type": "string"
-                },
-                "created": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "updated": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "setting.BrandNew": {
-            "type": "object",
-            "required": [
-                "name",
-                "status"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 1
-                },
-                "status": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                }
-            }
-        },
-        "setting.BrandResponse": {
-            "type": "object",
-            "properties": {
-                "brand_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                }
-            }
-        },
-        "setting.Carrier": {
-            "type": "object",
-            "properties": {
-                "carrier_id": {
-                    "type": "string"
-                },
-                "created": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "updated": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "setting.CarrierNew": {
-            "type": "object",
-            "required": [
-                "name",
-                "status"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 1
-                },
-                "status": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                }
-            }
-        },
-        "setting.CarrierResponse": {
-            "type": "object",
-            "properties": {
-                "carrier_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                }
-            }
-        },
-        "setting.Customer": {
-            "type": "object",
-            "properties": {
-                "address1": {
-                    "type": "string"
-                },
-                "address2": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string"
-                },
-                "contact_email": {
-                    "type": "string"
-                },
-                "contact_first_name": {
-                    "type": "string"
-                },
-                "contact_last_name": {
-                    "type": "string"
-                },
-                "contact_phone": {
-                    "type": "string"
-                },
-                "contact_salutation": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                },
-                "created": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "customer_id": {
-                    "type": "string"
-                },
-                "fax": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "state": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "updated": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                },
-                "zip": {
-                    "type": "string"
-                }
-            }
-        },
-        "setting.CustomerNew": {
-            "type": "object",
-            "required": [
-                "name",
-                "status"
-            ],
-            "properties": {
-                "address1": {
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "address2": {
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "city": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "contact_email": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "contact_first_name": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "contact_last_name": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "contact_phone": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "contact_salutation": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "country": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "fax": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 1
-                },
-                "phone": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "state": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "status": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "zip": {
-                    "type": "string",
-                    "maxLength": 64
-                }
-            }
-        },
-        "setting.CustomerResponse": {
-            "type": "object",
-            "properties": {
-                "address1": {
-                    "type": "string"
-                },
-                "address2": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string"
-                },
-                "contact_email": {
-                    "type": "string"
-                },
-                "contact_first_name": {
-                    "type": "string"
-                },
-                "contact_last_name": {
-                    "type": "string"
-                },
-                "contact_phone": {
-                    "type": "string"
-                },
-                "contact_salutation": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                },
-                "customer_id": {
-                    "type": "string"
-                },
-                "fax": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "state": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "zip": {
-                    "type": "string"
-                }
-            }
-        },
-        "setting.Manufacturer": {
-            "type": "object",
-            "properties": {
-                "created": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "manufacturer_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "updated": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "setting.ManufacturerNew": {
-            "type": "object",
-            "required": [
-                "name",
-                "status"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 1
-                },
-                "status": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                }
-            }
-        },
-        "setting.ManufacturerResponse": {
-            "type": "object",
-            "properties": {
-                "manufacturer_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                }
-            }
-        },
-        "setting.PaymentMethod": {
-            "type": "object",
-            "properties": {
-                "created": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "payment_method_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "updated": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "setting.PaymentMethodNew": {
-            "type": "object",
-            "required": [
-                "name",
-                "status"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 1
-                },
-                "status": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                }
-            }
-        },
-        "setting.PaymentMethodResponse": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "payment_method_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                }
-            }
-        },
-        "setting.Tax": {
-            "type": "object",
-            "properties": {
-                "created": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "tax_id": {
-                    "type": "string"
-                },
-                "tax_value": {
-                    "type": "number"
-                },
-                "updated": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "setting.TaxNew": {
-            "type": "object",
-            "required": [
-                "name",
-                "status",
-                "tax_value"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 1
-                },
-                "status": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "tax_value": {
-                    "type": "number",
-                    "maximum": 100
-                }
-            }
-        },
-        "setting.TaxResponse": {
+        "user.WxUserResponse": {
             "type": "object",
             "properties": {
                 "name": {
@@ -3752,283 +952,7 @@ var doc = `{
                 "status": {
                     "type": "integer"
                 },
-                "tax_id": {
-                    "type": "string"
-                },
-                "tax_value": {
-                    "type": "number"
-                }
-            }
-        },
-        "setting.Unit": {
-            "type": "object",
-            "properties": {
-                "created": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "unit_id": {
-                    "type": "string"
-                },
-                "unit_type": {
-                    "type": "string"
-                },
-                "updated": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "setting.UnitNew": {
-            "type": "object",
-            "required": [
-                "name",
-                "status"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 1
-                },
-                "status": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                }
-            }
-        },
-        "setting.UnitResponse": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "unit_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "setting.Vendor": {
-            "type": "object",
-            "properties": {
-                "address1": {
-                    "type": "string"
-                },
-                "address2": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string"
-                },
-                "contact_email": {
-                    "type": "string"
-                },
-                "contact_first_name": {
-                    "type": "string"
-                },
-                "contact_last_name": {
-                    "type": "string"
-                },
-                "contact_phone": {
-                    "type": "string"
-                },
-                "contact_salutation": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                },
-                "created": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "fax": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "state": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "updated": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                },
-                "vendor_id": {
-                    "type": "string"
-                },
-                "zip": {
-                    "type": "string"
-                }
-            }
-        },
-        "setting.VendorNew": {
-            "type": "object",
-            "required": [
-                "name",
-                "status"
-            ],
-            "properties": {
-                "address1": {
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "address2": {
-                    "type": "string",
-                    "maxLength": 255
-                },
-                "city": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "contact_email": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "contact_first_name": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "contact_last_name": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "contact_phone": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "contact_salutation": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "country": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "fax": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 1
-                },
-                "phone": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "state": {
-                    "type": "string",
-                    "maxLength": 64
-                },
-                "status": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "zip": {
-                    "type": "string",
-                    "maxLength": 64
-                }
-            }
-        },
-        "setting.VendorResponse": {
-            "type": "object",
-            "properties": {
-                "address1": {
-                    "type": "string"
-                },
-                "address2": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string"
-                },
-                "contact_email": {
-                    "type": "string"
-                },
-                "contact_first_name": {
-                    "type": "string"
-                },
-                "contact_last_name": {
-                    "type": "string"
-                },
-                "contact_phone": {
-                    "type": "string"
-                },
-                "contact_salutation": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                },
-                "fax": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_id": {
-                    "type": "string"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "state": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "vendor_id": {
-                    "type": "string"
-                },
-                "zip": {
+                "wxUser_id": {
                     "type": "string"
                 }
             }
