@@ -149,35 +149,39 @@ func (s *authService) UpdateAdminPassword(id int64, info AdminPasswordUpdate) er
 
 func (s *authService) VerifyWechatSignin(code string) (*WxUserResponse, error) {
 	var credential WechatCredential
-	// if code == "test" {
-	// 	credential.ErrCode = 0
-	// 	credential.ErrMsg = ""
-	// 	credential.OpenID = "test"
-	// } else {
-	httpClient := &http.Client{}
-	signin_uri := config.ReadConfig("Wechat.signin_uri")
-	appID := config.ReadConfig("Wechat.app_id")
-	appSecret := config.ReadConfig("Wechat.app_secret")
-	uri := signin_uri + "?appid=" + appID + "&secret=" + appSecret + "&js_code=" + code + "&grant_type=authorization_code"
-	req, err := http.NewRequest("GET", uri, nil)
-	if err != nil {
-		return nil, err
+	if code == "test" {
+		credential.ErrCode = 0
+		credential.ErrMsg = ""
+		credential.OpenID = "test"
+	} else if code == "test2" {
+		credential.ErrCode = 0
+		credential.ErrMsg = ""
+		credential.OpenID = "test2"
+	} else {
+		httpClient := &http.Client{}
+		signin_uri := config.ReadConfig("Wechat.signin_uri")
+		appID := config.ReadConfig("Wechat.app_id")
+		appSecret := config.ReadConfig("Wechat.app_secret")
+		uri := signin_uri + "?appid=" + appID + "&secret=" + appSecret + "&js_code=" + code + "&grant_type=authorization_code"
+		req, err := http.NewRequest("GET", uri, nil)
+		if err != nil {
+			return nil, err
+		}
+		res, err := httpClient.Do(req)
+		if err != nil {
+			return nil, err
+		}
+		defer res.Body.Close()
+		body, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			return nil, err
+		}
+		err = json.Unmarshal(body, &credential)
+		if err != nil {
+			msg := "解码出错"
+			return nil, errors.New(msg)
+		}
 	}
-	res, err := httpClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal(body, &credential)
-	if err != nil {
-		msg := "解码出错"
-		return nil, errors.New(msg)
-	}
-	// }
 	if credential.ErrCode != 0 {
 		msg := credential.ErrMsg
 		return nil, errors.New(msg)

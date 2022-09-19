@@ -49,7 +49,7 @@ var doc = `{
                     },
                     {
                         "type": "integer",
-                        "description": "每页行数（5/10/15/20）",
+                        "description": "每页行数",
                         "name": "page_size",
                         "in": "query",
                         "required": true
@@ -77,6 +77,56 @@ var doc = `{
                                             "items": {
                                                 "$ref": "#/definitions/auth.AdminUserResponse"
                                             }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorRes"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "创建后台用户",
+                "operationId": "002",
+                "parameters": [
+                    {
+                        "description": "登录类型",
+                        "name": "signup_info",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.SignupRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.SuccessRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
                                         }
                                     }
                                 }
@@ -194,6 +244,195 @@ var doc = `{
                 }
             }
         },
+        "/historys": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "二维码管理"
+                ],
+                "summary": "扫码历史列表",
+                "operationId": "203",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页行数",
+                        "name": "page_size",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "学生ID",
+                        "name": "user_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "工作人员ID",
+                        "name": "by_user_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "学生姓名",
+                        "name": "user_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "工作人员姓名",
+                        "name": "by_user_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "扫码时间开始",
+                        "name": "scan_date_from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "扫码时间结束",
+                        "name": "scan_date_to",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.ListRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/qrcode.ScanHistoryResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/qrcodes": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "二维码管理"
+                ],
+                "summary": "新建二维码",
+                "operationId": "201",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.SuccessRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/scan": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "二维码管理"
+                ],
+                "summary": "扫描二维码",
+                "operationId": "202",
+                "parameters": [
+                    {
+                        "description": "二维码信息",
+                        "name": "wxQrcode_info",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/qrcode.ScanQrcodeNew"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.SuccessRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorRes"
+                        }
+                    }
+                }
+            }
+        },
         "/signin": {
             "post": {
                 "consumes": [
@@ -252,58 +491,6 @@ var doc = `{
                 }
             }
         },
-        "/users": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户管理"
-                ],
-                "summary": "创建后台用户",
-                "operationId": "002",
-                "parameters": [
-                    {
-                        "description": "登录类型",
-                        "name": "signup_info",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/auth.SignupRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessRes"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorRes"
-                        }
-                    }
-                }
-            }
-        },
         "/wx/signin": {
             "post": {
                 "consumes": [
@@ -324,7 +511,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/auth.SigninRequest"
+                            "$ref": "#/definitions/auth.WxSigninRequest"
                         }
                     }
                 ],
@@ -385,7 +572,7 @@ var doc = `{
                     },
                     {
                         "type": "integer",
-                        "description": "每页行数（5/10/15/20）",
+                        "description": "每页行数",
                         "name": "page_size",
                         "in": "query",
                         "required": true
@@ -669,7 +856,7 @@ var doc = `{
                     "小程序用户管理"
                 ],
                 "summary": "批量导入微信用户",
-                "operationId": "61",
+                "operationId": "306",
                 "parameters": [
                     {
                         "type": "file",
@@ -781,6 +968,20 @@ var doc = `{
                 }
             }
         },
+        "auth.WxSigninRequest": {
+            "type": "object",
+            "required": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "identity": {
+                    "type": "string"
+                }
+            }
+        },
         "auth.WxSigninResponse": {
             "type": "object",
             "properties": {
@@ -821,6 +1022,48 @@ var doc = `{
                 },
                 "status": {
                     "type": "integer"
+                }
+            }
+        },
+        "qrcode.ScanHistoryResponse": {
+            "type": "object",
+            "properties": {
+                "by_user": {
+                    "type": "string"
+                },
+                "by_user_id": {
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "scan_time": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "user": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "qrcode.ScanQrcodeNew": {
+            "type": "object",
+            "required": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 1
                 }
             }
         },

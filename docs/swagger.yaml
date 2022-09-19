@@ -48,6 +48,15 @@ definitions:
     - password
     - username
     type: object
+  auth.WxSigninRequest:
+    properties:
+      code:
+        type: string
+      identity:
+        type: string
+    required:
+    - code
+    type: object
   auth.WxSigninResponse:
     properties:
       token:
@@ -75,6 +84,34 @@ definitions:
         type: string
       status:
         type: integer
+    type: object
+  qrcode.ScanHistoryResponse:
+    properties:
+      by_user:
+        type: string
+      by_user_id:
+        type: integer
+      code:
+        type: string
+      id:
+        type: integer
+      scan_time:
+        type: string
+      status:
+        type: integer
+      user:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  qrcode.ScanQrcodeNew:
+    properties:
+      code:
+        maxLength: 64
+        minLength: 1
+        type: string
+    required:
+    - code
     type: object
   response.ErrorRes:
     properties:
@@ -189,7 +226,7 @@ paths:
         name: page_id
         required: true
         type: integer
-      - description: 每页行数（5/10/15/20）
+      - description: 每页行数
         in: query
         name: page_size
         required: true
@@ -217,6 +254,36 @@ paths:
           schema:
             $ref: '#/definitions/response.ErrorRes'
       summary: 后台用户列表
+      tags:
+      - 用户管理
+    post:
+      consumes:
+      - application/json
+      operationId: "002"
+      parameters:
+      - description: 登录类型
+        in: body
+        name: signup_info
+        required: true
+        schema:
+          $ref: '#/definitions/auth.SignupRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessRes'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorRes'
+      summary: 创建后台用户
       tags:
       - 用户管理
   /adminusers/:id:
@@ -280,6 +347,122 @@ paths:
       summary: 更新密码
       tags:
       - 用户管理
+  /historys:
+    get:
+      consumes:
+      - application/json
+      operationId: "203"
+      parameters:
+      - description: 页码
+        in: query
+        name: page_id
+        required: true
+        type: integer
+      - description: 每页行数
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      - description: 学生ID
+        in: query
+        name: user_id
+        type: string
+      - description: 工作人员ID
+        in: query
+        name: by_user_id
+        type: string
+      - description: 学生姓名
+        in: query
+        name: user_name
+        type: string
+      - description: 工作人员姓名
+        in: query
+        name: by_user_name
+        type: string
+      - description: 扫码时间开始
+        in: query
+        name: scan_date_from
+        type: string
+      - description: 扫码时间结束
+        in: query
+        name: scan_date_to
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ListRes'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/qrcode.ScanHistoryResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorRes'
+      summary: 扫码历史列表
+      tags:
+      - 二维码管理
+  /qrcodes:
+    post:
+      consumes:
+      - application/json
+      operationId: "201"
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessRes'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorRes'
+      summary: 新建二维码
+      tags:
+      - 二维码管理
+  /scan:
+    post:
+      consumes:
+      - application/json
+      operationId: "202"
+      parameters:
+      - description: 二维码信息
+        in: body
+        name: wxQrcode_info
+        required: true
+        schema:
+          $ref: '#/definitions/qrcode.ScanQrcodeNew'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessRes'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorRes'
+      summary: 扫描二维码
+      tags:
+      - 二维码管理
   /signin:
     post:
       consumes:
@@ -315,37 +498,6 @@ paths:
       summary: 登录
       tags:
       - 用户管理
-  /users:
-    post:
-      consumes:
-      - application/json
-      operationId: "002"
-      parameters:
-      - description: 登录类型
-        in: body
-        name: signup_info
-        required: true
-        schema:
-          $ref: '#/definitions/auth.SignupRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.SuccessRes'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorRes'
-      summary: 创建后台用户
-      tags:
-      - 用户管理
   /wx/signin:
     post:
       consumes:
@@ -357,7 +509,7 @@ paths:
         name: signin_info
         required: true
         schema:
-          $ref: '#/definitions/auth.SigninRequest'
+          $ref: '#/definitions/auth.WxSigninRequest'
       produces:
       - application/json
       responses:
@@ -392,7 +544,7 @@ paths:
         name: page_id
         required: true
         type: integer
-      - description: 每页行数（5/10/15/20）
+      - description: 每页行数
         in: query
         name: page_size
         required: true
@@ -566,7 +718,7 @@ paths:
     post:
       consumes:
       - application/json
-      operationId: "61"
+      operationId: "306"
       parameters:
       - description: 上传文件
         in: formData

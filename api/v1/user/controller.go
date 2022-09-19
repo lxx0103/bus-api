@@ -18,7 +18,7 @@ import (
 // @Accept application/json
 // @Produce application/json
 // @Param page_id query int true "页码"
-// @Param page_size query int true "每页行数（5/10/15/20）"
+// @Param page_size query int true "每页行数"
 // @Param name query string false "姓名"
 // @Param class query string false "班级"
 // @Param grade query string false "年级"
@@ -156,7 +156,7 @@ func DeleteWxUser(c *gin.Context) {
 }
 
 // @Summary 批量导入微信用户
-// @Id 61
+// @Id 306
 // @Tags 小程序用户管理
 // @version 1.0
 // @Accept application/json

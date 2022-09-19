@@ -66,7 +66,7 @@ func Signin(c *gin.Context) {
 // @Param signup_info body SignupRequest true "登录类型"
 // @Success 200 object response.SuccessRes{data=string} 创建成功
 // @Failure 400 object response.ErrorRes 内部错误
-// @Router /users [POST]
+// @Router /adminusers [POST]
 func NewAdminUser(c *gin.Context) {
 	var info SignupRequest
 	err := c.ShouldBindJSON(&info)
@@ -92,7 +92,7 @@ func NewAdminUser(c *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Param page_id query int true "页码"
-// @Param page_size query int true "每页行数（5/10/15/20）"
+// @Param page_size query int true "每页行数"
 // @Param username query string false "用户名称"
 // @Success 200 object response.ListRes{data=[]AdminUserResponse} 成功
 // @Failure 400 object response.ErrorRes 内部错误
@@ -177,7 +177,7 @@ func UpdateAdminPassword(c *gin.Context) {
 // @version 1.0
 // @Accept application/json
 // @Produce application/json
-// @Param signin_info body SigninRequest true "登录类型"
+// @Param signin_info body WxSigninRequest true "登录类型"
 // @Success 200 object response.SuccessRes{data=WxSigninResponse} 登录成功
 // @Failure 400 object response.ErrorRes 内部错误
 // @Failure 401 object response.ErrorRes 登录失败
