@@ -61,7 +61,7 @@ func (s *userService) NewWxUser(info WxUserNew) error {
 	wxUser.Identity = info.Identity
 	wxUser.Role = info.Role
 	wxUser.ExpireDate = info.ExpireDate
-	wxUser.Status = info.Status
+	wxUser.Status = 1
 	wxUser.Created = time.Now()
 	wxUser.CreatedBy = byUser.Username
 	wxUser.Updated = time.Now()
@@ -119,7 +119,6 @@ func (s *userService) UpdateWxUser(wxUserID int64, info WxUserNew) error {
 	wxUser.Identity = info.Identity
 	wxUser.Role = info.Role
 	wxUser.ExpireDate = info.ExpireDate
-	wxUser.Status = info.Status
 	wxUser.Updated = time.Now()
 	wxUser.UpdatedBy = byUser.Username
 	err = repo.UpdateWxUser(wxUserID, wxUser)
@@ -203,8 +202,8 @@ func (s *userService) BatchUploadWxUser(path string, byID int64) error {
 		} else {
 			wxUser.Name = line[0]
 		}
-		if line[1] != "学生" && line[1] != "工作人员" {
-			msg := "第" + strconv.Itoa(row+1) + "行角色错误，必须为学生或工作人员"
+		if line[1] != "学生" && line[1] != "员工" {
+			msg := "第" + strconv.Itoa(row+1) + "行角色错误，必须为学生或员工"
 			return errors.New(msg)
 		} else {
 			wxUser.Role = line[1]
@@ -243,4 +242,48 @@ func (s *userService) BatchUploadWxUser(path string, byID int64) error {
 	}
 	tx.Commit()
 	return nil
+}
+
+func (s *userService) UpdateWxUserStatus(wxUserID int64, info WxUserStatusNew) error {
+	db := database.WDB()
+	tx, err := db.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+	repo := NewUserRepository(tx)
+	authRepo := auth.NewAuthRepository(tx)
+	byUser, err := authRepo.GetAdminUserByID(info.UserID)
+	if err != nil {
+		msg := "获取当前用户失败"
+		return errors.New(msg)
+	}
+	oldWxUser, err := repo.GetWxUserByID(info.UserID)
+	if err != nil {
+		msg := "获取微信用户失败"
+		return errors.New(msg)
+	}
+
+	var wxUser auth.WxUser
+	if info.Status == "active" {
+		if oldWxUser.OpenID == "" {
+			wxUser.Status = 1
+		} else {
+			wxUser.Status = 2
+		}
+	} else if info.Status == "deactive" {
+		wxUser.Status = 3
+	} else {
+		msg := "状态错误"
+		return errors.New(msg)
+	}
+	wxUser.Updated = time.Now()
+	wxUser.UpdatedBy = byUser.Username
+	err = repo.UpdateWxUserStatus(wxUserID, wxUser)
+	if err != nil {
+		msg := "更新小程序用户状态失败"
+		return errors.New(msg)
+	}
+	tx.Commit()
+	return err
 }

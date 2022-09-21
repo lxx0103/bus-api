@@ -30,7 +30,7 @@ func (s *qrcodeService) NewWxQrcode(id int64) (*string, error) {
 		msg := "获取当前用户失败"
 		return nil, errors.New(msg)
 	}
-	if byUser.Status != 2 {
+	if byUser.Status != 2 { //已绑定
 		msg := "用户状态错误"
 		return nil, errors.New(msg)
 	}
@@ -98,8 +98,8 @@ func (s *qrcodeService) ScanQrcode(info ScanQrcodeNew) error {
 		msg := "用户状态错误"
 		return errors.New(msg)
 	}
-	if byUser.Role != "工作人员" {
-		msg := "角色错误，只有工作人员可以扫码"
+	if byUser.Role != "员工" {
+		msg := "角色错误，只有员工可以扫码"
 		return errors.New(msg)
 	}
 	qrcode, err := repo.GetQrcodeByCode(info.Code)

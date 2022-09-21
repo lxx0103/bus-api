@@ -280,7 +280,7 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "工作人员ID",
+                        "description": "员工ID",
                         "name": "by_user_id",
                         "in": "query"
                     },
@@ -292,7 +292,7 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "工作人员姓名",
+                        "description": "员工姓名",
                         "name": "by_user_name",
                         "in": "query"
                     },
@@ -844,6 +844,65 @@ var doc = `{
                 }
             }
         },
+        "/wxusers/:id/status": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "小程序用户管理"
+                ],
+                "summary": "启用禁用小程序用户",
+                "operationId": "307",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "小程序用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "小程序用户信息",
+                        "name": "wxUser_info",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.WxUserStatusNew"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.SuccessRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/user.WxUser"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorRes"
+                        }
+                    }
+                }
+            }
+        },
         "/wxusers/batch": {
             "post": {
                 "consumes": [
@@ -1140,8 +1199,7 @@ var doc = `{
                 "expire_date",
                 "identity",
                 "name",
-                "role",
-                "status"
+                "role"
             ],
             "properties": {
                 "class": {
@@ -1173,13 +1231,6 @@ var doc = `{
                     "type": "string",
                     "maxLength": 64,
                     "minLength": 1
-                },
-                "status": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
                 }
             }
         },
@@ -1197,6 +1248,21 @@ var doc = `{
                 },
                 "wxUser_id": {
                     "type": "string"
+                }
+            }
+        },
+        "user.WxUserStatusNew": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "deactive"
+                    ]
                 }
             }
         }

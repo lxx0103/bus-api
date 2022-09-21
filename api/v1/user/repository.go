@@ -64,11 +64,10 @@ func (r *userRepository) UpdateWxUser(id int64, info auth.WxUser) error {
 		class = ?,
 		identity = ?,
 		expire_date = ?,
-		status = ?,
 		updated = ?,
 		updated_by = ?
 		WHERE id = ?
-	`, info.Name, info.Role, info.Grade, info.Class, info.Identity, info.ExpireDate, info.Status, info.Updated, info.UpdatedBy, id)
+	`, info.Name, info.Role, info.Grade, info.Class, info.Identity, info.ExpireDate, info.Updated, info.UpdatedBy, id)
 	return err
 }
 
@@ -143,4 +142,15 @@ func (r *userRepository) BatchCreateWxUser(wxUsers []auth.WxUser) error {
 		}
 	}
 	return nil
+}
+
+func (r *userRepository) UpdateWxUserStatus(id int64, info auth.WxUser) error {
+	_, err := r.tx.Exec(`
+		Update u_wx_users SET
+		status = ?,
+		updated = ?,
+		updated_by = ?
+		WHERE id = ?
+	`, info.Status, info.Updated, info.UpdatedBy, id)
+	return err
 }

@@ -25,10 +25,14 @@ type WxUserNew struct {
 	Role       string `json:"role" binding:"required,min=1,max=64"`
 	Identity   string `json:"identity" binding:"required,min=1,max=64"`
 	ExpireDate string `json:"expire_date" binding:"required,min=1,max=64"`
-	Status     int    `json:"status" binding:"required,oneof=1 2"`
 	UserID     int64  `json:"user" swaggerignore:"true"`
 }
 
 type WxUserID struct {
 	ID int64 `uri:"id" binding:"required,min=1"`
+}
+
+type WxUserStatusNew struct {
+	Status string `json:"status" binding:"required,oneof=active deactive"`
+	UserID int64  `json:"user" swaggerignore:"true"`
 }

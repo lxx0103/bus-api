@@ -193,3 +193,36 @@ func NewBatchWxUser(c *gin.Context) {
 	}
 	response.Response(c, "ok")
 }
+
+// @Summary 启用禁用小程序用户
+// @Id 307
+// @Tags 小程序用户管理
+// @version 1.0
+// @Accept application/json
+// @Produce application/json
+// @Param id path int true "小程序用户ID"
+// @Param wxUser_info body WxUserStatusNew true "小程序用户信息"
+// @Success 200 object response.SuccessRes{data=WxUser} 成功
+// @Failure 400 object response.ErrorRes 内部错误
+// @Router /wxusers/:id/status [POST]
+func SetUserStatus(c *gin.Context) {
+	var uri WxUserID
+	if err := c.ShouldBindUri(&uri); err != nil {
+		response.ResponseError(c, "数据格式错误", err)
+		return
+	}
+	var info WxUserStatusNew
+	if err := c.ShouldBindJSON(&info); err != nil {
+		response.ResponseError(c, "数据格式错误", err)
+		return
+	}
+	claims := c.MustGet("claims").(*service.CustomClaims)
+	info.UserID = claims.UserID
+	userService := NewUserService()
+	err := userService.UpdateWxUserStatus(uri.ID, info)
+	if err != nil {
+		response.ResponseError(c, "内部错误", err)
+		return
+	}
+	response.Response(c, "更新成功")
+}

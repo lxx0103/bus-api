@@ -183,17 +183,11 @@ definitions:
         maxLength: 64
         minLength: 1
         type: string
-      status:
-        enum:
-        - 1
-        - 2
-        type: integer
     required:
     - expire_date
     - identity
     - name
     - role
-    - status
     type: object
   user.WxUserResponse:
     properties:
@@ -205,6 +199,16 @@ definitions:
         type: integer
       wxUser_id:
         type: string
+    type: object
+  user.WxUserStatusNew:
+    properties:
+      status:
+        enum:
+        - active
+        - deactive
+        type: string
+    required:
+    - status
     type: object
 host: 0.0.0.0:8080
 info:
@@ -367,7 +371,7 @@ paths:
         in: query
         name: user_id
         type: string
-      - description: 工作人员ID
+      - description: 员工ID
         in: query
         name: by_user_id
         type: string
@@ -375,7 +379,7 @@ paths:
         in: query
         name: user_name
         type: string
-      - description: 工作人员姓名
+      - description: 员工姓名
         in: query
         name: by_user_name
         type: string
@@ -712,6 +716,42 @@ paths:
           schema:
             $ref: '#/definitions/response.ErrorRes'
       summary: 根据ID更新小程序用户
+      tags:
+      - 小程序用户管理
+  /wxusers/:id/status:
+    post:
+      consumes:
+      - application/json
+      operationId: "307"
+      parameters:
+      - description: 小程序用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 小程序用户信息
+        in: body
+        name: wxUser_info
+        required: true
+        schema:
+          $ref: '#/definitions/user.WxUserStatusNew'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessRes'
+            - properties:
+                data:
+                  $ref: '#/definitions/user.WxUser'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorRes'
+      summary: 启用禁用小程序用户
       tags:
       - 小程序用户管理
   /wxusers/batch:

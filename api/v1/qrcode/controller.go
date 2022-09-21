@@ -63,9 +63,9 @@ func ScanQrcode(c *gin.Context) {
 // @Param page_id query int true "页码"
 // @Param page_size query int true "每页行数"
 // @Param user_id query string false "学生ID"
-// @Param by_user_id query string false "工作人员ID"
+// @Param by_user_id query string false "员工ID"
 // @Param user_name query string false "学生姓名"
-// @Param by_user_name query string false "工作人员姓名"
+// @Param by_user_name query string false "员工姓名"
 // @Param scan_date_from query string false "扫码时间开始"
 // @Param scan_date_to query string false "扫码时间结束"
 // @Success 200 object response.ListRes{data=[]ScanHistoryResponse} 成功

@@ -9,4 +9,5 @@ func AuthRouter(g *gin.RouterGroup) {
 	g.DELETE("/wxusers/:id", DeleteWxUser)
 	g.POST("/wxusers", NewWxUser)
 	g.POST("/wxusers/batch", NewBatchWxUser)
+	g.POST("/wxusers/:id/status", SetUserStatus)
 }
