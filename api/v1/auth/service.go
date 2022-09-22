@@ -38,6 +38,10 @@ func (s authService) CreateAdminUser(signupInfo SignupRequest) error {
 		msg := "获取当前用户出错"
 		return errors.New(msg)
 	}
+	if byUser.Role != "超级管理员" {
+		msg := "只有超级管理员可以新增管理员"
+		return errors.New(msg)
+	}
 	var newUser AdminUser
 	newUser.Password = hashed
 	isConflict, err := repo.CheckAdminUserConfict(signupInfo.Username)
