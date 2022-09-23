@@ -92,7 +92,7 @@ func (r *authRepository) GetWxUserByIdentity(identity string) (*WxUserResponse, 
 	row := r.tx.QueryRow(`
 	SELECT id, open_id, name, grade, class, identity, expire_date, role, status
 	FROM u_wx_users
-	WHERE identity = ?
+	WHERE identity = ? AND status > 0
 	`, identity)
 	err := row.Scan(&res.ID, &res.OpenID, &res.Name, &res.Grade, &res.Class, &res.Identity, &res.ExpireDate, &res.Role, &res.Status)
 	return &res, err
