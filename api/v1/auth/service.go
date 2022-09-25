@@ -258,3 +258,116 @@ func (s *authService) GetWxUserByOpenID(id string) (*WxUserResponse, error) {
 	}
 	return user, nil
 }
+
+func (s authService) CreateStaff(signupInfo StaffRequest) error {
+	hashed, err := hashPassword(signupInfo.Password)
+	if err != nil {
+		msg := "加密密码出错"
+		return errors.New(msg)
+	}
+	db := database.WDB()
+	tx, err := db.Begin()
+	if err != nil {
+		msg := "开启事务出错"
+		return errors.New(msg)
+	}
+	defer tx.Rollback()
+	repo := NewAuthRepository(tx)
+	byUser, err := repo.GetAdminUserByID(signupInfo.UserID)
+	if err != nil {
+		msg := "获取当前用户出错"
+		return errors.New(msg)
+	}
+	var newUser Staff
+	newUser.Password = hashed
+	isConflict, err := repo.CheckStaffConfict(signupInfo.Username)
+	if err != nil {
+		msg := "检查用户名合法性出错"
+		return errors.New(msg)
+	}
+	if isConflict {
+		msg := "用户名已存在"
+		return errors.New(msg)
+	}
+	newUser.Username = signupInfo.Username
+	newUser.Status = 1
+	newUser.Created = time.Now()
+	newUser.CreatedBy = byUser.Username
+	newUser.Updated = time.Now()
+	newUser.UpdatedBy = byUser.Username
+	err = repo.CreateStaff(newUser)
+	if err != nil {
+		msg := "创建员工出错"
+		return errors.New(msg)
+	}
+	tx.Commit()
+	return nil
+}
+
+func (s *authService) GetStaffList(filter StaffFilter) (int, *[]StaffResponse, error) {
+	db := database.RDB()
+	query := NewAuthQuery(db)
+	count, err := query.GetStaffCount(filter)
+	if err != nil {
+		return 0, nil, err
+	}
+	list, err := query.GetStaffList(filter)
+	if err != nil {
+		return 0, nil, err
+	}
+	return count, list, err
+}
+
+func (s *authService) GetStaffByID(id int64) (*StaffResponse, error) {
+	db := database.RDB()
+	query := NewAuthQuery(db)
+	user, err := query.GetStaffByID(id)
+	if err != nil {
+		msg := "员工不存在"
+		return nil, errors.New(msg)
+	}
+	return user, nil
+}
+
+func (s *authService) UpdateStaffPassword(id int64, info StaffPasswordUpdate) error {
+	db := database.WDB()
+	tx, err := db.Begin()
+	if err != nil {
+		msg := "开启事务出错"
+		return errors.New(msg)
+	}
+	defer tx.Rollback()
+	repo := NewAuthRepository(tx)
+	byUser, err := repo.GetAdminUserByID(info.UserID)
+	if err != nil {
+		msg := "获取当前用户出错"
+		return errors.New(msg)
+	}
+	hashed, err := hashPassword(info.Password)
+	if err != nil {
+		msg := "密码加密错误"
+		return errors.New(msg)
+	}
+	err = repo.UpdateStaffPassword(id, hashed, byUser.Username)
+	if err != nil {
+		msg := "密码更新错误"
+		return errors.New(msg)
+	}
+	tx.Commit()
+	return nil
+}
+
+func (s *authService) VerifyStaffCredential(signinInfo SigninRequest) (*Staff, error) {
+	db := database.RDB()
+	query := NewAuthQuery(db)
+	userInfo, err := query.GetStaffByUsername(signinInfo.Username)
+	if err != nil {
+		msg := "用户不存在"
+		return nil, errors.New(msg)
+	}
+	if !checkPasswordHash(signinInfo.Password, userInfo.Password) {
+		msg := "密码错误"
+		return nil, errors.New(msg)
+	}
+	return userInfo, nil
+}

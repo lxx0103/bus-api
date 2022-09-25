@@ -1,6 +1,7 @@
 package qrcode
 
 import (
+	"bus-api/api/v1/auth"
 	"bus-api/api/v1/user"
 	"bus-api/core/database"
 	"errors"
@@ -75,13 +76,13 @@ func (s *qrcodeService) ScanQrcode(info ScanQrcodeNew) error {
 	}
 	defer tx.Rollback()
 	repo := NewQrcodeRepository(tx)
-	userRepo := user.NewUserRepository(tx)
-	byUser, err := userRepo.GetWxUserByID(info.UserID)
+	authRepo := auth.NewAuthRepository(tx)
+	byUser, err := authRepo.GetStaffByID(info.UserID)
 	if err != nil {
 		msg := "获取当前用户失败"
 		return errors.New(msg)
 	}
-	if byUser.Status != 2 {
+	if byUser.Status != 1 {
 		msg := "用户状态错误"
 		return errors.New(msg)
 	}
@@ -90,7 +91,7 @@ func (s *qrcodeService) ScanQrcode(info ScanQrcodeNew) error {
 		msg := "二维码不存在或已过期"
 		return errors.New(msg)
 	}
-	err = repo.ScanQrcode(qrcode.ID, byUser.Name)
+	err = repo.ScanQrcode(qrcode.ID, byUser.Username)
 	if err != nil {
 		msg := "扫描二维码失败"
 		return errors.New(msg)
@@ -98,15 +99,15 @@ func (s *qrcodeService) ScanQrcode(info ScanQrcodeNew) error {
 	var newHistory ScanHistory
 	newHistory.Code = qrcode.Code
 	newHistory.User = qrcode.UserName
-	newHistory.ByUser = byUser.Name
+	newHistory.ByUser = byUser.Username
 	newHistory.UserID = qrcode.UserID
 	newHistory.ByUserID = byUser.ID
 	newHistory.ScanTime = time.Now().Format("2006-01-02 15:04:05")
 	newHistory.Status = 1
 	newHistory.Created = time.Now()
-	newHistory.CreatedBy = byUser.Name
+	newHistory.CreatedBy = byUser.Username
 	newHistory.Updated = time.Now()
-	newHistory.UpdatedBy = byUser.Name
+	newHistory.UpdatedBy = byUser.Username
 	err = repo.CreateHistory(newHistory)
 	if err != nil {
 		msg := "创建扫码历史失败"

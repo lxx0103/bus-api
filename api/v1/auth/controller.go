@@ -225,3 +225,164 @@ func WxSignin(c *gin.Context) {
 	res.User = *userInfo
 	response.Response(c, res)
 }
+
+// @Summary 创建员工
+// @Id 007
+// @Tags 员工管理
+// @version 1.0
+// @Accept application/json
+// @Produce application/json
+// @Param signup_info body StaffRequest true "登录类型"
+// @Success 200 object response.SuccessRes{data=string} 创建成功
+// @Failure 400 object response.ErrorRes 内部错误
+// @Router /staffs [POST]
+func NewStaff(c *gin.Context) {
+	var info StaffRequest
+	err := c.ShouldBindJSON(&info)
+	if err != nil {
+		response.ResponseError(c, "数据格式错误", err)
+		return
+	}
+	authService := NewAuthService()
+	claims := c.MustGet("claims").(*service.CustomClaims)
+	info.UserID = claims.UserID
+	err = authService.CreateStaff(info)
+	if err != nil {
+		response.ResponseError(c, "内部错误", err)
+		return
+	}
+	response.Response(c, "创建成功")
+}
+
+// @Summary 员工列表
+// @Id 008
+// @Tags 员工管理
+// @version 1.0
+// @Accept application/json
+// @Produce application/json
+// @Param page_id query int true "页码"
+// @Param page_size query int true "每页行数"
+// @Param username query string false "用户名称"
+// @Success 200 object response.ListRes{data=[]StaffResponse} 成功
+// @Failure 400 object response.ErrorRes 内部错误
+// @Router /staffs [GET]
+func GetStaffList(c *gin.Context) {
+	var filter StaffFilter
+	err := c.ShouldBindQuery(&filter)
+	if err != nil {
+		response.ResponseError(c, "数据格式错误", err)
+		return
+	}
+	authService := NewAuthService()
+	count, list, err := authService.GetStaffList(filter)
+	if err != nil {
+		response.ResponseError(c, "内部错误", err)
+		return
+	}
+	response.ResponseList(c, filter.PageID, filter.PageSize, count, list)
+}
+
+// @Summary 根据ID获取员工
+// @Id 009
+// @Tags 员工管理
+// @version 1.0
+// @Accept application/json
+// @Produce application/json
+// @Param id path int true "员工ID"
+// @Success 200 object response.SuccessRes{data=StaffResponse} 成功
+// @Failure 400 object response.ErrorRes 内部错误
+// @Router /staffs/:id [GET]
+func GetStaffByID(c *gin.Context) {
+	var uri StaffID
+	if err := c.ShouldBindUri(&uri); err != nil {
+		response.ResponseError(c, "数据格式错误", err)
+		return
+	}
+	authService := NewAuthService()
+	user, err := authService.GetStaffByID(uri.ID)
+	if err != nil {
+		response.ResponseError(c, "内部错误", err)
+		return
+	}
+	response.Response(c, user)
+
+}
+
+// @Summary 更新员工密码
+// @Id 010
+// @Tags 员工管理
+// @version 1.0
+// @Accept application/json
+// @Produce application/json
+// @Param info body StaffPasswordUpdate true "用户信息"
+// @Success 200 object response.SuccessRes{data=string} 成功
+// @Failure 400 object response.ErrorRes 内部错误
+// @Router /staffs/:id/passwords [PUT]
+func UpdateStaffPassword(c *gin.Context) {
+	var uri StaffID
+	if err := c.ShouldBindUri(&uri); err != nil {
+		response.ResponseError(c, "数据格式错误", err)
+		return
+	}
+	var info StaffPasswordUpdate
+	if err := c.ShouldBindJSON(&info); err != nil {
+		response.ResponseError(c, "数据格式错误", err)
+		return
+	}
+	claims := c.MustGet("claims").(*service.CustomClaims)
+	info.UserID = claims.UserID
+	authService := NewAuthService()
+	err := authService.UpdateStaffPassword(uri.ID, info)
+	if err != nil {
+		response.ResponseError(c, "内部错误", err)
+		return
+	}
+	response.Response(c, "ok")
+}
+
+// @Summary 员工登录
+// @Id 011
+// @Tags 用户管理
+// @version 1.0
+// @Accept application/json
+// @Produce application/json
+// @Param signin_info body SigninRequest true "登录类型"
+// @Success 200 object response.SuccessRes{data=SigninResponse} 登录成功
+// @Failure 400 object response.ErrorRes 内部错误
+// @Failure 401 object response.ErrorRes 登录失败
+// @Router /staff/signin [POST]
+func StaffSignin(c *gin.Context) {
+	var signinInfo SigninRequest
+	err := c.ShouldBindJSON(&signinInfo)
+	if err != nil {
+		response.ResponseError(c, "数据格式错误", err)
+		return
+	}
+	authService := NewAuthService()
+	userInfo, err := authService.VerifyStaffCredential(signinInfo)
+	if err != nil {
+		response.ResponseUnauthorized(c, "用户信息错误", err)
+		return
+	}
+	var StaffResponse StaffResponse
+	StaffResponse.ID = userInfo.ID
+	StaffResponse.Username = userInfo.Username
+	StaffResponse.Status = userInfo.Status
+
+	claims := service.CustomClaims{
+		UserID:   userInfo.ID,
+		UserName: userInfo.Username,
+		Role:     "staff",
+		StandardClaims: jwt.StandardClaims{
+			NotBefore: time.Now().Unix() - 1000,
+			ExpiresAt: time.Now().Unix() + 72000,
+			Issuer:    "wms",
+		},
+	}
+	jwtServices := service.JWTAuthService()
+	generatedToken := jwtServices.GenerateToken(claims)
+	var res StaffSigninResponse
+	res.Token = generatedToken
+	res.User = StaffResponse
+	response.Response(c, res)
+}

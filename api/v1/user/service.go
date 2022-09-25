@@ -53,6 +53,11 @@ func (s *userService) NewWxUser(info WxUserNew) error {
 		msg := "身份证已存在"
 		return errors.New(msg)
 	}
+	identityValid := checkIDValid(info.Identity)
+	if !identityValid {
+		msg := "身份证验证失败"
+		return errors.New(msg)
+	}
 	var wxUser auth.WxUser
 	wxUser.OpenID = ""
 	wxUser.Name = info.Name
@@ -109,6 +114,11 @@ func (s *userService) UpdateWxUser(wxUserID int64, info WxUserNew) error {
 	}
 	if isConflict {
 		msg := "身份证已存在"
+		return errors.New(msg)
+	}
+	identityValid := checkIDValid(info.Identity)
+	if !identityValid {
+		msg := "身份证验证失败"
 		return errors.New(msg)
 	}
 	var wxUser auth.WxUser

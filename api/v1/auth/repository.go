@@ -97,3 +97,52 @@ func (r *authRepository) GetWxUserByIdentity(identity string) (*WxUserResponse, 
 	err := row.Scan(&res.ID, &res.OpenID, &res.Name, &res.School, &res.Grade, &res.Class, &res.Identity, &res.Status)
 	return &res, err
 }
+
+func (r *authRepository) CheckStaffConfict(username string) (bool, error) {
+	var existed int
+	row := r.tx.QueryRow("SELECT count(1) FROM u_staffs WHERE username = ?", username)
+	err := row.Scan(&existed)
+	if err != nil {
+		return true, err
+	}
+	return existed != 0, nil
+}
+
+func (r *authRepository) CreateStaff(info Staff) error {
+	_, err := r.tx.Exec(`
+		INSERT INTO u_staffs
+		(
+			username,
+			password,
+			status,
+			created,
+			created_by,
+			updated,
+			updated_by
+		)
+		VALUES (?, ?, ?, ?, ?, ?, ?)
+	`, info.Username, info.Password, info.Status, info.Created, info.CreatedBy, info.Updated, info.UpdatedBy)
+	return err
+}
+
+func (r *authRepository) UpdateStaffPassword(id int64, password, byUser string) error {
+	_, err := r.tx.Exec(`
+		Update u_staffs SET
+		password = ?,
+		updated = ?,
+		updated_by = ?
+		WHERE id = ?
+	`, password, time.Now(), byUser, id)
+	return err
+}
+
+func (r *authRepository) GetStaffByID(id int64) (*StaffResponse, error) {
+	var res StaffResponse
+	row := r.tx.QueryRow(`
+	SELECT id, username,  status
+	FROM u_staffs
+	WHERE id = ?
+	`, id)
+	err := row.Scan(&res.ID, &res.Username, &res.Status)
+	return &res, err
+}

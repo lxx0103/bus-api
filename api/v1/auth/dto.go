@@ -77,3 +77,34 @@ type WxSignupRequest struct {
 	Password string `json:"password" binding:"required,min=6"`
 	UserID   int64  `json:"user_id" swaggerignore:"true"`
 }
+
+type StaffRequest struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required,min=6"`
+	UserID   int64  `json:"user_id" swaggerignore:"true"`
+}
+
+type StaffFilter struct {
+	Username string `form:"username" binding:"omitempty"`
+	request.PageInfo
+}
+
+type StaffID struct {
+	ID int64 `uri:"id" binding:"required,min=1"`
+}
+
+type StaffPasswordUpdate struct {
+	Password string `json:"password" binding:"required,min=6"`
+	UserID   int64  `json:"user_id" swaggerignore:"true"`
+}
+
+type StaffResponse struct {
+	ID       int64  `db:"id" json:"id"`
+	Username string `db:"username" json:"username"`
+	Status   int    `db:"status" json:"status"`
+}
+
+type StaffSigninResponse struct {
+	Token string `json:"token"`
+	User  StaffResponse
+}
