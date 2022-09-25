@@ -71,6 +71,7 @@ func (r *qrcodeQuery) GetHistoryList(filter HistoryFilter) (*[]ScanHistoryRespon
 		SELECT id, code, user, user_id, by_user, by_user_id, scan_time, status
 		FROM q_scan_historys
 		WHERE `+strings.Join(where, " AND ")+`
+		ORDER BY id DESC
 		LIMIT ?, ?
 	`, args...)
 	return &wxQrcodes, err
