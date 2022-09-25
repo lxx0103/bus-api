@@ -212,7 +212,6 @@ func WxSignin(c *gin.Context) {
 	claims := service.CustomClaims{
 		UserID:   userInfo.ID,
 		UserName: userInfo.Name,
-		Role:     userInfo.Role,
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: time.Now().Unix() - 1000,
 			ExpiresAt: time.Now().Unix() + 72000,

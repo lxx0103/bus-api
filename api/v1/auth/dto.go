@@ -58,15 +58,14 @@ type WxSigninResponse struct {
 }
 
 type WxUserResponse struct {
-	ID         int64  `db:"id" json:"id"`
-	OpenID     string `db:"open_id" json:"open_id"`
-	Name       string `db:"name" json:"name"`
-	Grade      string `db:"grade" json:"grade"`
-	Class      string `db:"class" json:"class"`
-	Identity   string `db:"identity" json:"identity"`
-	ExpireDate string `db:"expire_date" json:"expire_date"`
-	Role       string `db:"role" json:"role"`
-	Status     int    `db:"status" json:"status"`
+	ID       int64  `db:"id" json:"id"`
+	OpenID   string `db:"open_id" json:"open_id"`
+	Name     string `db:"name" json:"name"`
+	School   string `db:"school" json:"school"`
+	Grade    string `db:"grade" json:"grade"`
+	Class    string `db:"class" json:"class"`
+	Identity string `db:"identity" json:"identity"`
+	Status   int    `db:"status" json:"status"`
 }
 
 type WxSignupRequest struct {

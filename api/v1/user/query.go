@@ -34,8 +34,8 @@ func (r *userQuery) GetWxUserCount(filter WxUserFilter) (int, error) {
 	if v := filter.Class; v != "" {
 		where, args = append(where, "class = ?"), append(args, v)
 	}
-	if v := filter.Role; v != "" {
-		where, args = append(where, "role = ?"), append(args, v)
+	if v := filter.School; v != "" {
+		where, args = append(where, "school = ?"), append(args, v)
 	}
 	if v := filter.Identity; v != "" {
 		where, args = append(where, "identity like ?"), append(args, "%"+v+"%")
@@ -59,8 +59,8 @@ func (r *userQuery) GetWxUserList(filter WxUserFilter) (*[]auth.WxUserResponse, 
 	if v := filter.Class; v != "" {
 		where, args = append(where, "class = ?"), append(args, v)
 	}
-	if v := filter.Role; v != "" {
-		where, args = append(where, "role = ?"), append(args, v)
+	if v := filter.School; v != "" {
+		where, args = append(where, "school = ?"), append(args, v)
 	}
 	if v := filter.Identity; v != "" {
 		where, args = append(where, "identity like ?"), append(args, "%"+v+"%")
@@ -69,7 +69,7 @@ func (r *userQuery) GetWxUserList(filter WxUserFilter) (*[]auth.WxUserResponse, 
 	args = append(args, filter.PageSize)
 	var wxUsers []auth.WxUserResponse
 	err := r.conn.Select(&wxUsers, `
-		SELECT id, open_id, name, grade, class, identity, IFNULL(expire_date, '1970-01-01') as expire_date, role, status
+		SELECT id, open_id, name, school, grade, class, identity, status
 		FROM u_wx_users
 		WHERE `+strings.Join(where, " AND ")+`
 		LIMIT ?, ?

@@ -10,4 +10,5 @@ func AuthRouter(g *gin.RouterGroup) {
 	g.POST("/wxusers", NewWxUser)
 	g.POST("/wxusers/batch", NewBatchWxUser)
 	g.POST("/wxusers/:id/status", SetUserStatus)
+	g.POST("/wxusers/:id/unbind", UnbindUser)
 }

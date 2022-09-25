@@ -68,8 +68,6 @@ definitions:
     properties:
       class:
         type: string
-      expire_date:
-        type: string
       grade:
         type: string
       id:
@@ -80,7 +78,7 @@ definitions:
         type: string
       open_id:
         type: string
-      role:
+      school:
         type: string
       status:
         type: integer
@@ -163,10 +161,6 @@ definitions:
         maxLength: 64
         minLength: 1
         type: string
-      expire_date:
-        maxLength: 64
-        minLength: 1
-        type: string
       grade:
         maxLength: 64
         minLength: 1
@@ -179,15 +173,14 @@ definitions:
         maxLength: 64
         minLength: 1
         type: string
-      role:
+      school:
         maxLength: 64
         minLength: 1
         type: string
     required:
-    - expire_date
     - identity
     - name
-    - role
+    - school
     type: object
   user.WxUserResponse:
     properties:
@@ -557,6 +550,10 @@ paths:
         in: query
         name: name
         type: string
+      - description: 校区
+        in: query
+        name: school
+        type: string
       - description: 班级
         in: query
         name: class
@@ -568,10 +565,6 @@ paths:
       - description: 身份证号
         in: query
         name: identity
-        type: string
-      - description: 角色（学生，员工）
-        in: query
-        name: role
         type: string
       produces:
       - application/json
@@ -752,6 +745,36 @@ paths:
           schema:
             $ref: '#/definitions/response.ErrorRes'
       summary: 启用禁用小程序用户
+      tags:
+      - 小程序用户管理
+  /wxusers/:id/unbind:
+    post:
+      consumes:
+      - application/json
+      operationId: "308"
+      parameters:
+      - description: 小程序用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessRes'
+            - properties:
+                data:
+                  $ref: '#/definitions/user.WxUser'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorRes'
+      summary: 解绑小程序用户
       tags:
       - 小程序用户管理
   /wxusers/batch:

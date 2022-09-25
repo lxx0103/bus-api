@@ -34,19 +34,6 @@ func (s *qrcodeService) NewWxQrcode(id int64) (*string, error) {
 		msg := "用户状态错误"
 		return nil, errors.New(msg)
 	}
-	if byUser.Role != "学生" {
-		msg := "角色错误"
-		return nil, errors.New(msg)
-	}
-	expireTime, err := time.Parse("2006-01-02", byUser.ExpireDate)
-	if err != nil {
-		msg := "获取过期时间错误"
-		return nil, errors.New(msg)
-	}
-	if expireTime.Before(time.Now()) {
-		msg := "已过期"
-		return nil, errors.New(msg)
-	}
 	count, err := repo.CheckQrCodePeriod(byUser.ID, time.Now().Add(time.Duration(-900*time.Second)))
 	if err != nil {
 		msg := "获取扫码记录失败"
@@ -96,10 +83,6 @@ func (s *qrcodeService) ScanQrcode(info ScanQrcodeNew) error {
 	}
 	if byUser.Status != 2 {
 		msg := "用户状态错误"
-		return errors.New(msg)
-	}
-	if byUser.Role != "员工" {
-		msg := "角色错误，只有员工可以扫码"
 		return errors.New(msg)
 	}
 	qrcode, err := repo.GetQrcodeByCode(info.Code)

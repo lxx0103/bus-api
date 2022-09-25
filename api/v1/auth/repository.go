@@ -90,10 +90,10 @@ func (r *authRepository) UpdateWxUser(id int64, info WxUser) error {
 func (r *authRepository) GetWxUserByIdentity(identity string) (*WxUserResponse, error) {
 	var res WxUserResponse
 	row := r.tx.QueryRow(`
-	SELECT id, open_id, name, grade, class, identity, expire_date, role, status
+	SELECT id, open_id, name, school, grade, class, identity, status
 	FROM u_wx_users
 	WHERE identity = ? AND status > 0
 	`, identity)
-	err := row.Scan(&res.ID, &res.OpenID, &res.Name, &res.Grade, &res.Class, &res.Identity, &res.ExpireDate, &res.Role, &res.Status)
+	err := row.Scan(&res.ID, &res.OpenID, &res.Name, &res.School, &res.Grade, &res.Class, &res.Identity, &res.Status)
 	return &res, err
 }

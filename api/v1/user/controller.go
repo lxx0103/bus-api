@@ -20,10 +20,10 @@ import (
 // @Param page_id query int true "页码"
 // @Param page_size query int true "每页行数"
 // @Param name query string false "姓名"
+// @Param school query string false "校区"
 // @Param class query string false "班级"
 // @Param grade query string false "年级"
 // @Param identity query string false "身份证号"
-// @Param role query string false "角色（学生，员工）"
 // @Success 200 object response.ListRes{data=[]auth.WxUserResponse} 成功
 // @Failure 400 object response.ErrorRes 内部错误
 // @Router /wxusers [GET]
@@ -173,7 +173,7 @@ func NewBatchWxUser(c *gin.Context) {
 	}
 	dest := config.ReadConfig("file.upload_path")
 	extension := filepath.Ext(uploaded.Filename)
-	if extension != ".csv" {
+	if extension != ".xlsx" {
 		response.ResponseError(c, "文件格式错误", errors.New("需要导入csv文件"))
 		return
 	}
@@ -220,6 +220,32 @@ func SetUserStatus(c *gin.Context) {
 	info.UserID = claims.UserID
 	userService := NewUserService()
 	err := userService.UpdateWxUserStatus(uri.ID, info)
+	if err != nil {
+		response.ResponseError(c, "内部错误", err)
+		return
+	}
+	response.Response(c, "更新成功")
+}
+
+// @Summary 解绑小程序用户
+// @Id 308
+// @Tags 小程序用户管理
+// @version 1.0
+// @Accept application/json
+// @Produce application/json
+// @Param id path int true "小程序用户ID"
+// @Success 200 object response.SuccessRes{data=WxUser} 成功
+// @Failure 400 object response.ErrorRes 内部错误
+// @Router /wxusers/:id/unbind [POST]
+func UnbindUser(c *gin.Context) {
+	var uri WxUserID
+	if err := c.ShouldBindUri(&uri); err != nil {
+		response.ResponseError(c, "数据格式错误", err)
+		return
+	}
+	claims := c.MustGet("claims").(*service.CustomClaims)
+	userService := NewUserService()
+	err := userService.UnbindWxUser(uri.ID, claims.UserID)
 	if err != nil {
 		response.ResponseError(c, "内部错误", err)
 		return

@@ -585,6 +585,12 @@ var doc = `{
                     },
                     {
                         "type": "string",
+                        "description": "校区",
+                        "name": "school",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "description": "班级",
                         "name": "class",
                         "in": "query"
@@ -599,12 +605,6 @@ var doc = `{
                         "type": "string",
                         "description": "身份证号",
                         "name": "identity",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "角色（学生，员工）",
-                        "name": "role",
                         "in": "query"
                     }
                 ],
@@ -903,6 +903,56 @@ var doc = `{
                 }
             }
         },
+        "/wxusers/:id/unbind": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "小程序用户管理"
+                ],
+                "summary": "解绑小程序用户",
+                "operationId": "308",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "小程序用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.SuccessRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/user.WxUser"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorRes"
+                        }
+                    }
+                }
+            }
+        },
         "/wxusers/batch": {
             "post": {
                 "consumes": [
@@ -1058,9 +1108,6 @@ var doc = `{
                 "class": {
                     "type": "string"
                 },
-                "expire_date": {
-                    "type": "string"
-                },
                 "grade": {
                     "type": "string"
                 },
@@ -1076,7 +1123,7 @@ var doc = `{
                 "open_id": {
                     "type": "string"
                 },
-                "role": {
+                "school": {
                     "type": "string"
                 },
                 "status": {
@@ -1196,18 +1243,12 @@ var doc = `{
         "user.WxUserNew": {
             "type": "object",
             "required": [
-                "expire_date",
                 "identity",
                 "name",
-                "role"
+                "school"
             ],
             "properties": {
                 "class": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 1
-                },
-                "expire_date": {
                     "type": "string",
                     "maxLength": 64,
                     "minLength": 1
@@ -1227,7 +1268,7 @@ var doc = `{
                     "maxLength": 64,
                     "minLength": 1
                 },
-                "role": {
+                "school": {
                     "type": "string",
                     "maxLength": 64,
                     "minLength": 1
