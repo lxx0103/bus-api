@@ -78,7 +78,7 @@ func (r *authQuery) GetAdminUserByID(id int64) (*AdminUserResponse, error) {
 func (r *authQuery) GetWxUserByOpenID(openID string) (*WxUserResponse, error) {
 	var user WxUserResponse
 	err := r.conn.Get(&user, `
-		SELECT id, open_id, name, grade, class, identity, role, IFNULL(expire_date, "1970-01-01") as expire_date, status
+		SELECT id, open_id, name, school, grade, class, identity, status
 		FROM u_wx_users
 		WHERE open_id = ? AND status > 0
 	`, openID)
