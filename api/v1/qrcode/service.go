@@ -35,13 +35,13 @@ func (s *qrcodeService) NewWxQrcode(id int64) (*string, error) {
 		msg := "用户状态错误"
 		return nil, errors.New(msg)
 	}
-	count, err := repo.CheckQrCodePeriod(byUser.ID, time.Now().Add(time.Duration(-900*time.Second)))
+	count, err := repo.CheckQrCodePeriod(byUser.ID, time.Now().Format("2006-01-02"))
 	if err != nil {
 		msg := "获取扫码记录失败"
 		return nil, errors.New(msg)
 	}
 	if count {
-		msg := "15分钟内已成功扫码过，无法再次生成"
+		msg := "今天已成功扫码过，无法再次生成"
 		return nil, errors.New(msg)
 	}
 	err = repo.DeleteUserQrcode(id, byUser.Name)

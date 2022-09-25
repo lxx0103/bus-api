@@ -86,7 +86,7 @@ func (r *qrcodeRepository) CreateHistory(info ScanHistory) error {
 	return err
 }
 
-func (r *qrcodeRepository) CheckQrCodePeriod(id int64, period time.Time) (bool, error) {
+func (r *qrcodeRepository) CheckQrCodePeriod(id int64, period string) (bool, error) {
 	var existed int
 	row := r.tx.QueryRow("SELECT count(1) FROM q_scan_historys WHERE user_id = ? AND scan_time > ?", id, period)
 	err := row.Scan(&existed)
