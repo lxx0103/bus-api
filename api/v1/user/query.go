@@ -19,7 +19,7 @@ func NewUserQuery(connection *sqlx.DB) *userQuery {
 
 func (r *userQuery) GetWxUserByID(id int64) (*auth.WxUserResponse, error) {
 	var wxUser auth.WxUserResponse
-	err := r.conn.Get(&wxUser, "SELECT id, open_id, name, grade, class, identity, IFNULL(expire_date, '1970-01-01') as expire_date, role, status FROM u_wx_users WHERE id = ? AND status > 0", id)
+	err := r.conn.Get(&wxUser, "SELECT id, open_id, name, school, grade, class, identity, status FROM u_wx_users WHERE id = ? AND status > 0", id)
 	return &wxUser, err
 }
 
