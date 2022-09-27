@@ -206,9 +206,6 @@ func (s *userService) BatchUploadWxUser(path string, byID int64) error {
 			cn, rn := c.GetCoordinates()
 			switch cn {
 			case 0:
-				if c.Value == "" {
-					return nil
-				}
 				wxUser.School = c.Value
 			case 1:
 				wxUser.Grade = c.Value
@@ -217,16 +214,22 @@ func (s *userService) BatchUploadWxUser(path string, byID int64) error {
 			case 3:
 				wxUser.Name = c.Value
 			case 4:
-				identityValid := checkIDValid(c.Value)
-				if !identityValid {
-					msg := " 第" + strconv.Itoa(rn+1) + "行身份证验证失败"
-					errmsg += msg
+				if c.Value != "" {
+					identityValid := checkIDValid(c.Value)
+					if !identityValid {
+						msg := " 第" + strconv.Itoa(rn+1) + "行身份证验证失败"
+						errmsg += msg
+					}
+					wxUser.Identity = c.Value
+				} else {
+					wxUser.Identity = c.Value
 				}
-				wxUser.Identity = c.Value
 			}
 			return err
 		})
-		wxUsers = append(wxUsers, wxUser)
+		if wxUser.Identity != "" {
+			wxUsers = append(wxUsers, wxUser)
+		}
 		return err
 	})
 	if errmsg != "" {
