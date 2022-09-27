@@ -207,7 +207,7 @@ func (s *userService) BatchUploadWxUser(path string, byID int64) error {
 			switch cn {
 			case 0:
 				if c.Value == "" {
-					break
+					return nil
 				}
 				wxUser.School = c.Value
 			case 1:
