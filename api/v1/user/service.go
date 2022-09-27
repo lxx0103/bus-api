@@ -214,16 +214,17 @@ func (s *userService) BatchUploadWxUser(path string, byID int64) error {
 			case 3:
 				wxUser.Name = c.Value
 			case 4:
-				if c.Value != "" {
-					identityValid := checkIDValid(c.Value)
-					if !identityValid {
-						msg := " 第" + strconv.Itoa(rn+1) + "行身份证验证失败"
-						errmsg += msg
-					}
-					wxUser.Identity = c.Value
-				} else {
-					wxUser.Identity = c.Value
-				}
+				// if c.Value != "" {
+				// 	identityValid := checkIDValid(c.Value)
+				// 	if !identityValid {
+				// 		msg := " 第" + strconv.Itoa(rn+1) + "行身份证验证失败"
+				// 		errmsg += msg
+				// 	}
+				// 	wxUser.Identity = c.Value
+				// } else {
+				// 	wxUser.Identity = c.Value
+				// }
+				wxUser.Identity = c.Value
 			}
 			return err
 		})
