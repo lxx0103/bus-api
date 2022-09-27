@@ -203,7 +203,8 @@ func (s *userService) BatchUploadWxUser(path string, byID int64) error {
 		wxUser.UpdatedBy = byUser.Username
 		wxUser.Status = 1
 		r.ForEachCell(func(c *xlsx.Cell) error {
-			cn, rn := c.GetCoordinates()
+			// cn, rn := c.GetCoordinates()
+			cn, _ := c.GetCoordinates()
 			switch cn {
 			case 0:
 				wxUser.School = c.Value
