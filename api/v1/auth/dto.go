@@ -108,3 +108,8 @@ type StaffSigninResponse struct {
 	Token string `json:"token"`
 	User  StaffResponse
 }
+
+type LimitRequest struct {
+	Limit  int   `json:"limit" binding:"required"`
+	UserID int64 `json:"user_id" swaggerignore:"true"`
+}

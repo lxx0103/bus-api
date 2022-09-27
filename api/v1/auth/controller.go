@@ -386,3 +386,72 @@ func StaffSignin(c *gin.Context) {
 	res.User = StaffResponse
 	response.Response(c, res)
 }
+
+// @Summary 清空所有数据
+// @Id 012
+// @Tags 管理权限
+// @version 1.0
+// @Accept application/json
+// @Produce application/json
+// @Success 200 object response.SuccessRes{data=string} 成功
+// @Failure 400 object response.ErrorRes 内部错误
+// @Router /clearalldata [POST]
+func ClearAllData(c *gin.Context) {
+	claims := c.MustGet("claims").(*service.CustomClaims)
+	authService := NewAuthService()
+	err := authService.ClearAllData(claims.UserID)
+	if err != nil {
+		response.ResponseError(c, "内部错误", err)
+		return
+	}
+	response.Response(c, "ok")
+}
+
+// @Summary 获取一日扫码次数
+// @Id 013
+// @Tags 管理权限
+// @version 1.0
+// @Accept application/json
+// @Produce application/json
+// @Success 200 object response.SuccessRes{data=int} 成功
+// @Failure 400 object response.ErrorRes 内部错误
+// @Router /scanlimit [GET]
+func GetScanLimit(c *gin.Context) {
+	claims := c.MustGet("claims").(*service.CustomClaims)
+	authService := NewAuthService()
+	user, err := authService.GetScanLimit(claims.UserID)
+	if err != nil {
+		response.ResponseError(c, "内部错误", err)
+		return
+	}
+	response.Response(c, user)
+
+}
+
+// @Summary 设置一日扫码限制
+// @Id 013
+// @Tags 管理权限
+// @version 1.0
+// @Accept application/json
+// @Produce application/json
+// @Param signup_info body LimitRequest true "登录类型"
+// @Success 200 object response.SuccessRes{data=string} 创建成功
+// @Failure 400 object response.ErrorRes 内部错误
+// @Router /scanlimit [POST]
+func UpdateScanLimit(c *gin.Context) {
+	var info LimitRequest
+	err := c.ShouldBindJSON(&info)
+	if err != nil {
+		response.ResponseError(c, "数据格式错误", err)
+		return
+	}
+	authService := NewAuthService()
+	claims := c.MustGet("claims").(*service.CustomClaims)
+	info.UserID = claims.UserID
+	err = authService.UpdateScanLimit(info.UserID, info.Limit)
+	if err != nil {
+		response.ResponseError(c, "内部错误", err)
+		return
+	}
+	response.Response(c, "更新成功")
+}

@@ -13,6 +13,9 @@ func AuthRouter(g *gin.RouterGroup) {
 	g.GET("/adminusers", GetAdminUserList)
 	g.GET("/adminusers/:id", GetAdminUserByID)
 	g.PUT("/adminusers/:id/passwords", UpdateAdminPassword)
+	g.POST("/clearalldata", ClearAllData)
+	g.GET("/scanlimit", GetScanLimit)
+	g.POST("/scanlimit", UpdateScanLimit)
 
 	g.POST("/staffs", NewStaff)
 	g.GET("/staffs", GetStaffList)

@@ -371,3 +371,77 @@ func (s *authService) VerifyStaffCredential(signinInfo SigninRequest) (*Staff, e
 	}
 	return userInfo, nil
 }
+
+func (s *authService) ClearAllData(id int64) error {
+	db := database.WDB()
+	tx, err := db.Begin()
+	if err != nil {
+		msg := "开启事务出错"
+		return errors.New(msg)
+	}
+	defer tx.Rollback()
+	repo := NewAuthRepository(tx)
+	byUser, err := repo.GetAdminUserByID(id)
+	if err != nil {
+		msg := "获取当前用户出错"
+		return errors.New(msg)
+	}
+	if byUser.Role != "超级管理员" {
+		msg := "只有超级管理员才可以清空数据"
+		return errors.New(msg)
+	}
+	err = repo.ClearAllData(byUser.Username)
+	if err != nil {
+		msg := "清空数据错误"
+		return errors.New(msg)
+	}
+	tx.Commit()
+	return nil
+}
+
+func (s *authService) GetScanLimit(id int64) (int, error) {
+	db := database.RDB()
+	query := NewAuthQuery(db)
+	byUser, err := query.GetAdminUserByID(id)
+	if err != nil {
+		msg := "获取当前用户出错"
+		return 0, errors.New(msg)
+	}
+	if byUser.Role != "超级管理员" {
+		msg := "只有超级管理员才可以获取扫码限制"
+		return 0, errors.New(msg)
+	}
+	res, err := query.GetScanLimit()
+	if err != nil {
+		msg := "获取数据出错"
+		return 0, errors.New(msg)
+	}
+	return res, nil
+}
+
+func (s *authService) UpdateScanLimit(id int64, limit int) error {
+	db := database.WDB()
+	tx, err := db.Begin()
+	if err != nil {
+		msg := "开启事务出错"
+		return errors.New(msg)
+	}
+	defer tx.Rollback()
+	repo := NewAuthRepository(tx)
+	byUser, err := repo.GetAdminUserByID(id)
+	if err != nil {
+		msg := "获取当前用户出错"
+		return errors.New(msg)
+	}
+	if byUser.Role != "超级管理员" {
+		msg := "只有超级管理员才可以更新扫码限制次数"
+		return errors.New(msg)
+	}
+	err = repo.UpdateScanLimit(byUser.Username, limit)
+	if err != nil {
+		msg := "更新扫码限制次数错误"
+		return errors.New(msg)
+	}
+	tx.Commit()
+	return nil
+}

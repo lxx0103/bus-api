@@ -86,12 +86,16 @@ func (r *qrcodeRepository) CreateHistory(info ScanHistory) error {
 	return err
 }
 
-func (r *qrcodeRepository) CheckQrCodePeriod(id int64, period string) (bool, error) {
-	var existed int
+func (r *qrcodeRepository) CheckQrCodePeriod(id int64, period string) (int, error) {
+	var count int
 	row := r.tx.QueryRow("SELECT count(1) FROM q_scan_historys WHERE user_id = ? AND scan_time > ?", id, period)
-	err := row.Scan(&existed)
-	if err != nil {
-		return true, err
-	}
-	return existed != 0, nil
+	err := row.Scan(&count)
+	return count, err
+}
+
+func (r *qrcodeRepository) GetScanLimit() (int, error) {
+	var limit int
+	row := r.tx.QueryRow("SELECT limits FROM s_scan_limits WHERE id = 1")
+	err := row.Scan(&limit)
+	return limit, err
 }

@@ -40,8 +40,13 @@ func (s *qrcodeService) NewWxQrcode(id int64) (*string, error) {
 		msg := "获取扫码记录失败"
 		return nil, errors.New(msg)
 	}
-	if count {
-		msg := "今天已成功扫码过，无法再次生成"
+	limit, err := repo.GetScanLimit()
+	if err != nil {
+		msg := "获取每天限制失败"
+		return nil, errors.New(msg)
+	}
+	if count >= limit {
+		msg := "今天达扫码次数限制，无法再次生成"
 		return nil, errors.New(msg)
 	}
 	err = repo.DeleteUserQrcode(id, byUser.Name)

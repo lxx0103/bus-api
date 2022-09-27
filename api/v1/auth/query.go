@@ -143,3 +143,13 @@ func (r *authQuery) GetStaffByUsername(username string) (*Staff, error) {
 	}
 	return &user, nil
 }
+
+func (r *authQuery) GetScanLimit() (int, error) {
+	var res int
+	err := r.conn.Get(&res, `
+		SELECT limits
+		FROM s_scan_limits
+		WHERE id = 1 
+	`)
+	return res, err
+}

@@ -146,3 +146,55 @@ func (r *authRepository) GetStaffByID(id int64) (*StaffResponse, error) {
 	err := row.Scan(&res.ID, &res.Username, &res.Status)
 	return &res, err
 }
+
+func (r *authRepository) ClearAllData(byUser string) error {
+	_, err := r.tx.Exec(`
+		Update u_staffs SET
+		status = -2,
+		updated = ?,
+		updated_by = ?
+		WHERE status > 0
+	`, time.Now(), byUser)
+	if err != nil {
+		return err
+	}
+	_, err = r.tx.Exec(`
+		Update u_wx_users SET
+		status = -2,
+		updated = ?,
+		updated_by = ?
+		WHERE status > 0
+	`, time.Now(), byUser)
+	if err != nil {
+		return err
+	}
+	_, err = r.tx.Exec(`
+		Update q_scan_historys SET
+		status = -2,
+		updated = ?,
+		updated_by = ?
+		WHERE status > 0
+	`, time.Now(), byUser)
+	if err != nil {
+		return err
+	}
+	_, err = r.tx.Exec(`
+		Update q_qrcodes SET
+		status = -2,
+		updated = ?,
+		updated_by = ?
+		WHERE status > 0
+	`, time.Now(), byUser)
+	return err
+}
+
+func (r *authRepository) UpdateScanLimit(byUser string, limit int) error {
+	_, err := r.tx.Exec(`
+		Update s_scan_limits SET
+		limits = ?,
+		updated = ?,
+		updated_by = ?
+		WHERE id = 1
+	`, limit, time.Now(), byUser)
+	return err
+}
