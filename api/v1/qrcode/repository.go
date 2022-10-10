@@ -43,10 +43,7 @@ func (r *qrcodeRepository) CreateQrcode(info Qrcode) error {
 
 func (r *qrcodeRepository) DeleteUserQrcode(id int64, byUser string) error {
 	_, err := r.tx.Exec(`
-		Update q_qrcodes SET
-		status = -1,
-		updated = ?,
-		updated_by = ?
+		DELETE FROM q_qrcodes
 		WHERE user_id = ?
 		AND status = 1
 	`, time.Now(), byUser, id)

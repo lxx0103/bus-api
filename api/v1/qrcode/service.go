@@ -58,7 +58,7 @@ func (s *qrcodeService) NewWxQrcode(id int64) (*string, error) {
 	newQrcode.Code = uuid.New().String()
 	newQrcode.UserID = id
 	newQrcode.UserName = byUser.Name
-	newQrcode.ExpireTime = time.Now().Add(time.Second * 30).Format("2006-01-02 15:04:05")
+	newQrcode.ExpireTime = time.Now().Add(time.Second * 40).Format("2006-01-02 15:04:05")
 	newQrcode.Status = 1
 	newQrcode.Created = time.Now()
 	newQrcode.CreatedBy = byUser.Name
