@@ -49,7 +49,7 @@ func (s *qrcodeService) NewWxQrcode(id int64) (*string, error) {
 		msg := "今天达扫码次数限制，无法再次生成"
 		return nil, errors.New(msg)
 	}
-	err = repo.DeleteUserQrcode(id, byUser.Name)
+	err = repo.DeleteUserQrcode(id)
 	if err != nil {
 		msg := "清除过时二维码失败"
 		return nil, errors.New(msg)

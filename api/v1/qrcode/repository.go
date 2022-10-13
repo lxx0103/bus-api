@@ -41,12 +41,12 @@ func (r *qrcodeRepository) CreateQrcode(info Qrcode) error {
 	return err
 }
 
-func (r *qrcodeRepository) DeleteUserQrcode(id int64, byUser string) error {
+func (r *qrcodeRepository) DeleteUserQrcode(id int64) error {
 	_, err := r.tx.Exec(`
 		DELETE FROM q_qrcodes
 		WHERE user_id = ?
 		AND status = 1
-	`, byUser, id)
+	`, id)
 	return err
 }
 
