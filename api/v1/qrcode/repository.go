@@ -46,7 +46,7 @@ func (r *qrcodeRepository) DeleteUserQrcode(id int64, byUser string) error {
 		DELETE FROM q_qrcodes
 		WHERE user_id = ?
 		AND status = 1
-	`, time.Now(), byUser, id)
+	`, byUser, id)
 	return err
 }
 
