@@ -260,7 +260,7 @@ func (s *userService) UpdateWxUserStatus(wxUserID int64, info WxUserStatusNew) e
 		msg := "获取当前用户失败"
 		return errors.New(msg)
 	}
-	oldWxUser, err := repo.GetWxUserByID(info.UserID)
+	oldWxUser, err := repo.GetWxUserByID(wxUserID)
 	if err != nil {
 		msg := "获取微信用户失败"
 		return errors.New(msg)
