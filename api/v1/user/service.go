@@ -175,7 +175,7 @@ func (s *userService) BatchUploadWxUser(path string, byID int64) error {
 	sheet, ok := wb.Sheet[sheetName]
 	if !ok {
 		msg := "第一个Sheet必须名为： Sheet1"
-		return errors.New(err.Error() + msg)
+		return errors.New(msg)
 	}
 	db := database.WDB()
 	tx, err := db.Begin()
@@ -225,7 +225,7 @@ func (s *userService) BatchUploadWxUser(path string, byID int64) error {
 				// } else {
 				// 	wxUser.Identity = c.Value
 				// }
-				wxUser.Identity = c.Value
+				wxUser.Identity = strings.Trim(c.Value, " ")
 			}
 			return err
 		})
