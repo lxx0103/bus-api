@@ -67,7 +67,7 @@ func (r *authRepository) UpdateAdminPassword(id int64, password, byUser string) 
 
 func (r *authRepository) CheckWxUserConfict(openID string) (bool, error) {
 	var existed int
-	row := r.tx.QueryRow("SELECT count(1) FROM u_wx_users WHERE open_id = ?", openID)
+	row := r.tx.QueryRow("SELECT count(1) FROM u_wx_users WHERE open_id = ? and status > 0", openID)
 	err := row.Scan(&existed)
 	if err != nil {
 		return true, err
