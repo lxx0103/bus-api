@@ -312,10 +312,10 @@ func checkIDValid(id string) bool {
 	}
 
 	// 生日验证
-	if !checkBirthdayCode(id[6:14]) {
-		fmt.Println(id, "生日验证失败！")
-		return false
-	}
+	// if !checkBirthdayCode(id[6:14]) {
+	// 	fmt.Println(id, "生日验证失败！")
+	// 	return false
+	// }
 
 	return true
 }
