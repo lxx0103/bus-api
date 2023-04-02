@@ -107,11 +107,10 @@ func (r *userRepository) BatchCreateWxUser(wxUsers []auth.WxUser) error {
 			school = ?,
 			grade = ?,
 			class = ?,
-			status = ?,
 			updated = ?,
 			updated_by = ?
 			WHERE identity = ?
-			`, wxUser.Name, wxUser.School, wxUser.Grade, wxUser.Class, wxUser.Status, wxUser.Updated, wxUser.UpdatedBy, wxUser.Identity)
+			`, wxUser.Name, wxUser.School, wxUser.Grade, wxUser.Class, wxUser.Updated, wxUser.UpdatedBy, wxUser.Identity)
 			if err != nil {
 				return err
 			}
