@@ -148,17 +148,17 @@ func (r *authRepository) GetStaffByID(id int64) (*StaffResponse, error) {
 }
 
 func (r *authRepository) ClearAllData(byUser string) error {
+	// _, err := r.tx.Exec(`
+	// 	Update u_staffs SET
+	// 	status = -2,
+	// 	updated = ?,
+	// 	updated_by = ?
+	// 	WHERE status > 0
+	// `, time.Now(), byUser)
+	// if err != nil {
+	// 	return err
+	// }
 	_, err := r.tx.Exec(`
-		Update u_staffs SET
-		status = -2,
-		updated = ?,
-		updated_by = ?
-		WHERE status > 0
-	`, time.Now(), byUser)
-	if err != nil {
-		return err
-	}
-	_, err = r.tx.Exec(`
 		Update u_wx_users SET
 		status = -2,
 		updated = ?,
